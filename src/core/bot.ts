@@ -1,7 +1,7 @@
 // src/bot.ts
 import { Composer } from './composer.js';
 import { BaseTelegramClient } from './base-api.js';
-import { SendMessageParams, Message, Update, GetUpdatesParams, SetWebhookParams, WebhookInfo, DeleteWebhookParams, User, ForwardMessageParams, ForwardMessagesParams, MessageId, CopyMessageParams, CopyMessagesParams, SendPhotoParams, SendAudioParams, SendDocumentParams, SendVideoParams, SendAnimationParams, SendVoiceParams, SendVideoNoteParams, SendPaidMediaParams, InputPaidMedia, SendMediaGroupParams, InputMediaVideo, InputMediaPhoto, InputMediaDocument, InputMediaAudio, SendLocationParams, SendVenueParams, SendContactParams, InputPollOption, SendPollParams, SendChecklistParams, InputChecklist, SendDiceParams, SendMessageDraftParams, SendChatActionParams, ReactionType, UserProfilePhotos, GetUserProfilePhotosParams, UserProfileAudios, GetUserProfileAudiosParams, SetUserEmojiStatusParams, GetFileParams, File as TelegramFile, BanChatMemberParams, UnbanChatMemberParams, RestrictChatMemberParams, ChatPermissions, PromoteChatMemberParams, SetChatMemberTagParams, SetChatPermissionsParams, ChatInviteLink, CreateChatInviteLinkParams, EditChatInviteLinkParams, CreateChatSubscriptionInviteLinkParams, EditChatSubscriptionInviteLinkParams, InputFile, PinChatMessageParams, UnpinChatMessageParams, ChatFullInfo, ChatMember, Sticker, CreateForumTopicParams, ForumTopic, EditForumTopicParams, AnswerCallbackQueryParams, UserChatBoosts, BusinessConnection, BotCommand, SetMyCommandsParams, DeleteMyCommandsParams, GetMyCommandsParams, SetMyNameParams, GetMyNameParams, BotName, SetMyDescriptionParams, GetMyDescriptionParams, BotDescription, SetMyShortDescriptionParams, GetMyShortDescriptionParams, BotShortDescription, SetMyProfilePhotoParams, InputProfilePhoto, SetChatMenuButtonParams, MenuButton, SetMyDefaultAdministratorRightsParams, GetMyDefaultAdministratorRightsParams, ChatAdministratorRights, Gifts, SendGiftParams, VerifyUserParams, VerifyChatParams, SetBusinessAccountNameParams, SetBusinessAccountUsernameParams, SetBusinessAccountBioParams, SetBusinessAccountProfilePhotoParams, RemoveBusinessAccountProfilePhotoParams, AcceptedGiftTypes, StarAmount, GetBusinessAccountGiftsParams, OwnedGifts, GetUserGiftsParams, GetChatGiftsParams, UpgradeGiftParams, TransferGiftParams, Story, InputStoryContent, PostStoryParams, RepostStoryParams, EditStoryParams, InlineQueryResult, SentWebAppMessage, PreparedInlineMessage, KeyboardButton, PreparedKeyboardButton, EditMessageTextParams, EditMessageCaptionParams, EditMessageMediaParams, InputMedia, EditMessageLiveLocationParams, StopMessageLiveLocationParams, EditMessageChecklistParams, EditMessageReplyMarkupParams, StopPollParams, ApproveSuggestedPostParams, DeclineSuggestedPostParams, Poll, SendStickerParams, StickerSet, InputSticker, CreateNewStickerSetParams, SetStickerMaskPositionParams, SetStickerSetThumbnailParams, AnswerInlineQueryParams, InlineQueryResultsButton, LabeledPrice, SendInvoiceParams, CreateInvoiceLinkParams, ShippingOption, AnswerPreCheckoutQueryParams, GetStarTransactionsParams, StarTransactions, SendGameParams, SetGameScoreParams, GetGameHighScoresParams, GameHighScore, GiftPremiumSubscriptionParams, SendLivePhotoParams, SentGuestMessage, GetChatAdministratorsParams, SavePreparedInlineMessageParams, DeleteAllMessageReactionsParams, DeleteMessageReactionParams, InputMediaLivePhoto, GetManagedBotAccessSettingsParams, BotAccessSettings, SetManagedBotAccessSettingsParams } from '../types/telegram.js';
+import { SendMessageParams, Message, Update, GetUpdatesParams, SetWebhookParams, WebhookInfo, DeleteWebhookParams, User, ForwardMessageParams, ForwardMessagesParams, MessageId, CopyMessageParams, CopyMessagesParams, SendPhotoParams, SendAudioParams, SendDocumentParams, SendVideoParams, SendAnimationParams, SendVoiceParams, SendVideoNoteParams, SendPaidMediaParams, InputPaidMedia, SendMediaGroupParams, InputMediaVideo, InputMediaPhoto, InputMediaDocument, InputMediaAudio, SendLocationParams, SendVenueParams, SendContactParams, InputPollOption, SendPollParams, SendChecklistParams, InputChecklist, SendDiceParams, SendMessageDraftParams, SendChatActionParams, ReactionType, UserProfilePhotos, GetUserProfilePhotosParams, UserProfileAudios, GetUserProfileAudiosParams, SetUserEmojiStatusParams, GetFileParams, File as TelegramFile, BanChatMemberParams, UnbanChatMemberParams, RestrictChatMemberParams, ChatPermissions, PromoteChatMemberParams, SetChatMemberTagParams, SetChatPermissionsParams, ChatInviteLink, CreateChatInviteLinkParams, EditChatInviteLinkParams, CreateChatSubscriptionInviteLinkParams, EditChatSubscriptionInviteLinkParams, InputFile, PinChatMessageParams, UnpinChatMessageParams, ChatFullInfo, ChatMember, Sticker, CreateForumTopicParams, ForumTopic, EditForumTopicParams, AnswerCallbackQueryParams, UserChatBoosts, BusinessConnection, BotCommand, SetMyCommandsParams, DeleteMyCommandsParams, GetMyCommandsParams, SetMyNameParams, GetMyNameParams, BotName, SetMyDescriptionParams, GetMyDescriptionParams, BotDescription, SetMyShortDescriptionParams, GetMyShortDescriptionParams, BotShortDescription, SetMyProfilePhotoParams, InputProfilePhoto, SetChatMenuButtonParams, MenuButton, SetMyDefaultAdministratorRightsParams, GetMyDefaultAdministratorRightsParams, ChatAdministratorRights, Gifts, SendGiftParams, VerifyUserParams, VerifyChatParams, SetBusinessAccountNameParams, SetBusinessAccountUsernameParams, SetBusinessAccountBioParams, SetBusinessAccountProfilePhotoParams, RemoveBusinessAccountProfilePhotoParams, AcceptedGiftTypes, StarAmount, GetBusinessAccountGiftsParams, OwnedGifts, GetUserGiftsParams, GetChatGiftsParams, UpgradeGiftParams, TransferGiftParams, Story, InputStoryContent, PostStoryParams, RepostStoryParams, EditStoryParams, InlineQueryResult, SentWebAppMessage, PreparedInlineMessage, KeyboardButton, PreparedKeyboardButton, EditMessageTextParams, EditMessageCaptionParams, EditMessageMediaParams, InputMedia, EditMessageLiveLocationParams, StopMessageLiveLocationParams, EditMessageChecklistParams, EditMessageReplyMarkupParams, StopPollParams, ApproveSuggestedPostParams, DeclineSuggestedPostParams, Poll, SendStickerParams, StickerSet, InputSticker, CreateNewStickerSetParams, SetStickerMaskPositionParams, SetStickerSetThumbnailParams, AnswerInlineQueryParams, InlineQueryResultsButton, LabeledPrice, SendInvoiceParams, CreateInvoiceLinkParams, ShippingOption, AnswerPreCheckoutQueryParams, GetStarTransactionsParams, StarTransactions, SendGameParams, SetGameScoreParams, GetGameHighScoresParams, GameHighScore, GiftPremiumSubscriptionParams, SendLivePhotoParams, SentGuestMessage, GetChatAdministratorsParams, SavePreparedInlineMessageParams, DeleteAllMessageReactionsParams, DeleteMessageReactionParams, InputMediaLivePhoto, GetManagedBotAccessSettingsParams, BotAccessSettings, SetManagedBotAccessSettingsParams, InputRichMessage, SendRichMessageParams, SendRichMessageDraftParams } from '../types/telegram.js';
 import { Context } from './context/index.js';
 
 /**
@@ -210,6 +210,49 @@ export class TelegramBot<C extends Context = Context> extends Composer<C> {
     return this.client.raw.sendMessage({
       chat_id,
       text,
+      ...options
+    });
+  }
+
+  /**
+   * Use this method to send rich messages. If the message contains a block with a media element, then the bot must have the right to send the media to the chat. On success, the sent `Message` is returned.
+   * @param chat_id Unique identifier for the target chat or channel username (in the format `@channelusername`)
+   * @param rich_message Rich message object. Exactly one of the fields `html` or `markdown` must be provided.
+   * @param options Additional message parameters
+   * @returns `Message` on success
+   */
+  public async sendRichMessage(
+    chat_id: string | number,
+    rich_message: ({ html: string; markdown?: never } | { markdown: string; html?: never })
+      & Pick<InputRichMessage, 'is_rtl' | 'skip_entity_detection'>,
+    options?: Omit<SendRichMessageParams, 'chat_id' | 'rich_message'>
+  ): Promise<Message> {
+    return this.client.raw.sendRichMessage({
+      chat_id,
+      rich_message,
+      ...options
+    });
+  }
+
+  /**
+   * Use this method to stream a partial rich message to a user while the message is being generated. Note that the streamed draft is ephemeral and acts as a temporary 30-second preview - once the output is finalized, you must call sendRichMessage with the complete message to persist it in the user's chat. Returns `True` on success.
+   * @param chat_id Unique identifier for the target private chat
+   * @param draft_id Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated.
+   * @param rich_message New rich message content. Exactly one of the fields `html` or `markdown` must be provided.
+   * @param options Additional message parameters
+   * @returns `True` on success
+   */
+  public async sendRichMessageDraft(
+    chat_id: number,
+    draft_id: number,
+    rich_message: ({ html: string; markdown?: never } | { markdown: string; html?: never })
+      & Pick<InputRichMessage, 'is_rtl' | 'skip_entity_detection'>,
+    options?: Omit<SendRichMessageDraftParams, 'chat_id' | 'draft_id' | 'rich_message'>
+  ): Promise<boolean> {
+    return this.client.raw.sendRichMessageDraft({
+      chat_id,
+      draft_id,
+      rich_message,
       ...options
     });
   }
@@ -1508,6 +1551,35 @@ export class TelegramBot<C extends Context = Context> extends Composer<C> {
   }
 
   /**
+   * Use this method to process a received chat join request query.
+   * Returns `True` on success.
+   * 
+   * @param chat_join_request_query_id Unique identifier of the join request query
+   * @param result Result of the query. Must be either “approve” to allow the user to join the chat, “decline” to disallow the user to join the chat, or “queue” to leave the decision to other administrators.
+   * @returns `True` on success
+   */
+  public async answerChatJoinRequestQuery(chat_join_request_query_id: string, result: 'approve' | 'decline' | 'queue'): Promise<boolean> {
+    return this.client.raw.answerChatJoinRequestQuery({
+      chat_join_request_query_id,
+      result
+    });
+  }
+
+  /**
+   * Use this method to process a received chat join request query by showing a Mini App to the user before deciding the outcome. Returns True on success.
+   * 
+   * @param chat_join_request_query_id Unique identifier of the join request query
+   * @param web_app_url The URL of the Mini App to be opened
+   * @returns `True` on success
+   */
+  public async sendChatJoinRequestWebApp(chat_join_request_query_id: string, web_app_url: string): Promise<boolean> {
+    return this.client.raw.sendChatJoinRequestWebApp({
+      chat_join_request_query_id,
+      web_app_url
+    });
+  }
+
+  /**
    * Use this method to reply to a received guest query. 
    * On success, a `SentGuestMessage` object is returned.
    * 
@@ -2323,21 +2395,27 @@ export class TelegramBot<C extends Context = Context> extends Composer<C> {
 
 
   /**
- * Edits a text message or inline message text.
- *
- * @param id Message identifier (either chat_id and message_id, or inline_message_id)
- * @param text New message text
- * @param options Additional parameters
- * @returns Edited message
- */
+   * Edits a text, rich or game message.
+   * Pass a `string` to edit as plain text, or a rich message object with `html`/`markdown` for rich content.
+   *
+   * @param id Message identifier (either `chat_id` and `message_id`, or `inline_message_id`)
+   * @param content New message text (`string`) or rich message object (exactly one of `html` or `markdown`)
+   * @param options Additional parameters
+   * @returns Edited `Message` if not inline, otherwise `true`
+   */
   public async editMessageText(
     id: EditMessageIds,
-    text: string,
-    options?: Omit<EditMessageTextParams, 'chat_id' | 'message_id' | 'inline_message_id' | 'text'>
+    content: string | (({ html: string; markdown?: never } | { markdown: string; html?: never })
+      & Pick<InputRichMessage, 'is_rtl' | 'skip_entity_detection'>),
+    options?: Omit<EditMessageTextParams, 'chat_id' | 'message_id' | 'inline_message_id' | 'text' | 'rich_message'>
   ): Promise<Message | boolean> {
+    const contentParams = typeof content === 'string'
+      ? { text: content }
+      : { rich_message: content };
+
     return this.client.raw.editMessageText({
       ...this.getEditIds(id),
-      text,
+      ...contentParams,
       ...options
     });
   }

@@ -1,6 +1,6 @@
 // Automatically generated from Telegram Bot API
-// API Version: Bot API 10.0
-// Updated: May 8, 2026
+// API Version: Bot API 10.1
+// Updated: June 11, 2026
 
 // ===============================
 // OBJECT TYPES
@@ -41,13 +41,13 @@ export interface Update {
   chosen_inline_result?: ChosenInlineResult;
   /** Optional. New incoming callback query */
   callback_query?: CallbackQuery;
-  /** Optional. New incoming shipping query. Only for invoices with flexible price */
+  /** Optional. New incoming shipping query. Only for invoices with flexible price. */
   shipping_query?: ShippingQuery;
-  /** Optional. New incoming pre-checkout query. Contains full information about checkout */
+  /** Optional. New incoming pre-checkout query. Contains full information about checkout. */
   pre_checkout_query?: PreCheckoutQuery;
   /** Optional. A user purchased paid media with a non-empty payload sent by the bot in a non-channel chat */
   purchased_paid_media?: PaidMediaPurchased;
-  /** Optional. New poll state. Bots receive only updates about manually stopped polls and polls, which are sent by the bot */
+  /** Optional. New poll state. Bots receive only updates about manually stopped polls and polls, which are sent by the bot. */
   poll?: Poll;
   /** Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself. */
   poll_answer?: PollAnswer;
@@ -85,7 +85,7 @@ export interface WebhookInfo {
   last_synchronization_error_date?: number;
   /** Optional. The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery */
   max_connections?: number;
-  /** Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member */
+  /** Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member, message_reaction, and message_reaction_count. */
   allowed_updates?: string[];
 }
 
@@ -127,6 +127,8 @@ export interface User {
   allows_users_to_create_topics?: boolean;
   /** Optional. True, if other bots can be created to be controlled by the bot. Returned only in getMe. */
   can_manage_bots?: boolean;
+  /** Optional. True, if the bot supports join request queries and can be assigned to process them. Returned only in getMe. */
+  supports_join_request_queries?: boolean;
 }
 
 /**
@@ -255,21 +257,23 @@ export interface ChatFullInfo {
   first_profile_audio?: Audio;
   /** Optional. The color scheme based on a unique gift that must be used for the chat's name, message replies and link previews */
   unique_gift_colors?: UniqueGiftColors;
-  /** Optional. The number of Telegram Stars a general user have to pay to send a message to the chat */
+  /** Optional. The number of Telegram Stars a general user has to pay to send a message to the chat */
   paid_message_star_count?: number;
+  /** Optional. The bot that processes join request queries in the chat. The field is only available to chat administrators. */
+  guard_bot?: User;
 }
 
 /**
  * This object represents a message.
  */
 export interface Message {
-  /** Unique message identifier inside this chat. In specific instances (e.g., message containing a video sent to a big chat), the server might automatically schedule a message instead of sending it immediately. In such cases, this field will be 0 and the relevant message will be unusable until it is actually sent */
+  /** Unique message identifier inside this chat. In specific instances (e.g., message containing a video sent to a big chat), the server might automatically schedule a message instead of sending it immediately. In such cases, this field will be 0 and the relevant message will be unusable until it is actually sent. */
   message_id: number;
   /** Optional. Unique identifier of a message thread or forum topic to which the message belongs; for supergroups and private chats only */
   message_thread_id?: number;
   /** Optional. Information about the direct messages chat topic that contains the message */
   direct_messages_topic?: DirectMessagesTopic;
-  /** Optional. Sender of the message; may be empty for messages sent to channels. For backward compatibility, if the message was sent on behalf of a chat, the field contains a fake sender user in non-channel chats */
+  /** Optional. Sender of the message; may be empty for messages sent to channels. For backward compatibility, if the message was sent on behalf of a chat, the field contains a fake sender user in non-channel chats. */
   from?: User;
   /** Optional. Sender of the message when sent on behalf of a chat. For example, the supergroup itself for messages sent by its anonymous administrators or a linked channel for messages automatically forwarded to the channel's discussion group. For backward compatibility, if the message was sent on behalf of a chat, the field from contains a fake sender user in non-channel chats. */
   sender_chat?: Chat;
@@ -335,13 +339,15 @@ export interface Message {
   suggested_post_info?: SuggestedPostInfo;
   /** Optional. Unique identifier of the message effect added to the message */
   effect_id?: string;
-  /** Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set */
+  /** Optional. Message is a rich formatted message */
+  rich_message?: RichMessage;
+  /** Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set. */
   animation?: Animation;
   /** Optional. Message is an audio file, information about the file */
   audio?: Audio;
   /** Optional. Message is a general file, information about the file */
   document?: Document;
-  /** Optional. Message is a live photo, information about the live photo. For backward compatibility, when this field is set, the photo field will also be set */
+  /** Optional. Message is a live photo, information about the live photo. For backward compatibility, when this field is set, the photo field will also be set. */
   live_photo?: LivePhoto;
   /** Optional. Message contains paid media; information about the paid media */
   paid_media?: PaidMediaInfo;
@@ -375,7 +381,7 @@ export interface Message {
   game?: Game;
   /** Optional. Message is a native poll, information about the poll */
   poll?: Poll;
-  /** Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set */
+  /** Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set. */
   venue?: Venue;
   /** Optional. Message is a shared location, information about the location */
   location?: Location;
@@ -497,7 +503,7 @@ export interface Message {
  * This object represents a unique message identifier.
  */
 export interface MessageId {
-  /** Unique message identifier. In specific instances (e.g., message containing a video sent to a big chat), the server might automatically schedule a message instead of sending it immediately. In such cases, this field will be 0 and the relevant message will be unusable until it is actually sent */
+  /** Unique message identifier. In specific instances (e.g., message containing a video sent to a big chat), the server might automatically schedule a message instead of sending it immediately. In such cases, this field will be 0 and the relevant message will be unusable until it is actually sent. */
   message_id: number;
 }
 
@@ -524,7 +530,7 @@ export type MaybeInaccessibleMessage = Message | InaccessibleMessage;
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
  */
 export interface MessageEntity {
-  /** Type of the entity. Currently, can be "mention" (`@username`), "hashtag" (#hashtag or #hashtag@chatusername), "cashtag" ($USD or $USD@chatusername), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "spoiler" (spoiler message), "blockquote" (block quotation), "expandable_blockquote" (collapsed-by-default block quotation), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs), "text_mention" (for users without usernames), "custom_emoji" (for inline custom emoji stickers), or "date_time" (for formatted date and time) */
+  /** Type of the entity. Currently, can be "mention" (@username), "hashtag" (#hashtag or #hashtag@chatusername), "cashtag" ($USD or $USD@chatusername), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "spoiler" (spoiler message), "blockquote" (block quotation), "expandable_blockquote" (collapsed-by-default block quotation), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs), "text_mention" (for users without usernames), "custom_emoji" (for inline custom emoji stickers), or "date_time" (for formatted date and time). */
   type: string;
   /** Offset in UTF-16 code units to the start of the entity */
   offset: number;
@@ -536,7 +542,7 @@ export interface MessageEntity {
   user?: User;
   /** Optional. For "pre" only, the programming language of the entity text */
   language?: string;
-  /** Optional. For "custom_emoji" only, unique identifier of the custom emoji. Use getCustomEmojiStickers to get full information about the sticker */
+  /** Optional. For "custom_emoji" only, unique identifier of the custom emoji. Use getCustomEmojiStickers to get full information about the sticker. */
   custom_emoji_id?: string;
   /** Optional. For "date_time" only, the Unix time associated with the entity */
   unix_time?: number;
@@ -622,7 +628,7 @@ export interface ExternalReplyInfo {
 export interface ReplyParameters {
   /** Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified */
   message_id: number;
-  /** Optional. If the message to be replied to is from a different chat, unique identifier for the chat or username of the bot, supergroup or channel in the format `@username`. Not supported for messages sent on behalf of a business account and messages from channel direct messages chats. */
+  /** Optional. If the message to be replied to is from a different chat, unique identifier for the chat or username of the bot, supergroup or channel in the format @username. Not supported for messages sent on behalf of a business account and messages from channel direct messages chats. */
   chat_id?: number | string;
   /** Optional. Pass True if the message should be sent even if the specified message to be replied to is not found. Always False for replies in another chat or forum topic. Always True for messages sent on behalf of a business account. */
   allow_sending_without_reply?: boolean;
@@ -918,6 +924,9 @@ export interface PaidMediaInfo {
  */
 export type PaidMedia = PaidMediaLivePhoto | PaidMediaPhoto | PaidMediaPreview | PaidMediaVideo;
 
+/**
+ * The paid media is a live photo.
+ */
 export interface PaidMediaLivePhoto {
   /** Type of the paid media, always "live_photo" */
   type: string;
@@ -986,6 +995,14 @@ export interface Dice {
 }
 
 /**
+ * Represents an HTTP link.
+ */
+export interface Link {
+  /** URL of the link */
+  url: string;
+}
+
+/**
  * At most one of the optional fields can be present in any given object.
  */
 export interface PollMedia {
@@ -995,6 +1012,8 @@ export interface PollMedia {
   audio?: Audio;
   /** Optional. Media is a general file, information about the file; currently, can't be received in a poll option */
   document?: Document;
+  /** Optional. The HTTP link attached to the poll option */
+  link?: Link;
   /** Optional. Media is a live photo, information about the live photo */
   live_photo?: LivePhoto;
   /** Optional. Media is a shared location, information about the location */
@@ -1025,6 +1044,7 @@ export type InputPollMedia = InputMediaAnimation | InputMediaAudio | InputMediaD
 /**
  * This object represents the content of a poll option to be sent. It should be one of
  * - InputMediaAnimation
+ * - InputMediaLink
  * - InputMediaLivePhoto
  * - InputMediaLocation
  * - InputMediaPhoto
@@ -1032,7 +1052,7 @@ export type InputPollMedia = InputMediaAnimation | InputMediaAudio | InputMediaD
  * - InputMediaVenue
  * - InputMediaVideo
  */
-export type InputPollOptionMedia = InputMediaAnimation | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaSticker | InputMediaVenue | InputMediaVideo;
+export type InputPollOptionMedia = InputMediaAnimation | InputMediaLink | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaSticker | InputMediaVenue | InputMediaVideo;
 
 /**
  * This object contains information about one answer option in a poll.
@@ -1062,9 +1082,9 @@ export interface PollOption {
 export interface InputPollOption {
   /** Option text, 1-100 characters */
   text: string;
-  /** Optional. Mode for parsing entities in the text. See formatting options for more details. Currently, only custom emoji entities are allowed */
+  /** Optional. Mode for parsing entities in the text. See formatting options for more details. Currently, only custom emoji entities are allowed. */
   text_parse_mode?: string;
-  /** Optional. A JSON-serialized list of special entities that appear in the poll option text. It can be specified instead of text_parse_mode */
+  /** Optional. A JSON-serialized list of special entities that appear in the poll option text. It can be specified instead of text_parse_mode. */
   text_entities?: MessageEntity[];
   /** Optional. Media added to the poll option */
   media?: InputPollOptionMedia;
@@ -1112,7 +1132,7 @@ export interface Poll {
   allows_revoting: boolean;
   /** True if voting is limited to users who have been members of the chat where the poll was originally sent for more than 24 hours */
   members_only: boolean;
-  /** Optional. A list of two-letter ISO 3166-1 alpha-2 country codes indicating the countries from which users can vote in the poll. If omitted, then users from any country can participate in the poll. */
+  /** Optional. A list of two-letter ISO 3166-1 alpha-2 country codes indicating the countries from which users can vote in the poll. The country code "FT" is used for users with anonymous numbers. If omitted, then users from any country can participate in the poll. */
   country_codes?: string[];
   /** Optional. Array of 0-based identifiers of the correct answer options. Available only for polls in quiz mode which are closed or were sent (not forwarded) by the bot or to the private chat with the bot. */
   correct_option_ids?: number[];
@@ -1244,7 +1264,7 @@ export interface Location {
  * This object represents a venue.
  */
 export interface Venue {
-  /** Venue location. Can't be a live location */
+  /** Venue location. Can't be a live location. */
   location: Location;
   /** Name of the venue */
   title: string;
@@ -1435,7 +1455,7 @@ export interface BackgroundTypePattern {
   fill: BackgroundFill;
   /** Intensity of the pattern when it is shown above the filled background; 0-100 */
   intensity: number;
-  /** Optional. True, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only */
+  /** Optional. True, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only. */
   is_inverted?: boolean;
   /** Optional. True, if the background moves slightly when the device is tilted */
   is_moving?: boolean;
@@ -1529,7 +1549,7 @@ export interface SharedUser {
 export interface UsersShared {
   /** Identifier of the request */
   request_id: number;
-  /** Information about users shared with the bot. */
+  /** Information about users shared with the bot */
   users: SharedUser[];
 }
 
@@ -1541,9 +1561,9 @@ export interface ChatShared {
   request_id: number;
   /** Identifier of the shared chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot may not have access to the chat and could be unable to use this identifier, unless the chat is already known to the bot by some other means. */
   chat_id: number;
-  /** Optional. Title of the chat, if the title was requested by the bot. */
+  /** Optional. Title of the chat, if the title was requested by the bot */
   title?: string;
-  /** Optional. Username of the chat, if the username was requested by the bot and available. */
+  /** Optional. Username of the chat, if the username was requested by the bot and available */
   username?: string;
   /** Optional. Available sizes of the chat photo, if the photo was requested by the bot */
   photo?: PhotoSize[];
@@ -1647,7 +1667,7 @@ export interface SuggestedPostDeclined {
 export interface SuggestedPostPaid {
   /** Optional. Message containing the suggested post. Note that the Message object in this field will not contain the reply_to_message field even if it itself is a reply. */
   suggested_post_message?: Message;
-  /** Currency in which the payment was made. Currently, one of "XTR" for Telegram Stars or "TON" for toncoins */
+  /** Currency in which the payment was made. Currently, one of "XTR" for Telegram Stars or "TON" for toncoins. */
   currency: string;
   /** Optional. The amount of the currency that was received by the channel in nanotoncoins; for payments in toncoins only */
   amount?: number;
@@ -1747,7 +1767,7 @@ export interface GiveawayCompleted {
 export interface LinkPreviewOptions {
   /** Optional. True, if the link preview is disabled */
   is_disabled?: boolean;
-  /** Optional. URL to use for the link preview. If empty, then the first URL found in the message text will be used */
+  /** Optional. URL to use for the link preview. If empty, then the first URL found in the message text will be used. */
   url?: string;
   /** Optional. True, if the media in the link preview is supposed to be shrunk; ignored if the URL isn't explicitly specified or media size change isn't supported for the preview */
   prefer_small_media?: boolean;
@@ -1761,7 +1781,7 @@ export interface LinkPreviewOptions {
  * Describes the price of a suggested post.
  */
 export interface SuggestedPostPrice {
-  /** Currency in which the post will be paid. Currently, must be one of "XTR" for Telegram Stars or "TON" for toncoins */
+  /** Currency in which the post will be paid. Currently, must be one of "XTR" for Telegram Stars or "TON" for toncoins. */
   currency: string;
   /** The amount of the currency that will be paid for the post in the smallest units of the currency, i.e. Telegram Stars or nanotoncoins. Currently, price in Telegram Stars must be between 5 and 100000, and price in nanotoncoins must be between 10000000 and 10000000000000. */
   amount: number;
@@ -1795,7 +1815,7 @@ export interface SuggestedPostParameters {
 export interface DirectMessagesTopic {
   /** Unique identifier of the topic. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. */
   topic_id: number;
-  /** Optional. Information about the user that created the topic. Currently, it is always present */
+  /** Optional. Information about the user that created the topic. Currently, it is always present. */
   user?: User;
 }
 
@@ -1855,7 +1875,7 @@ export interface ReplyKeyboardMarkup {
   one_time_keyboard?: boolean;
   /** Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters */
   input_field_placeholder?: string;
-  /** Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are `@mentioned` in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard. */
+  /** Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard. */
   selective?: boolean;
 }
 
@@ -1863,7 +1883,7 @@ export interface ReplyKeyboardMarkup {
  * This object represents one button of the reply keyboard. At most one of the fields other than text, icon_custom_emoji_id, and style must be used to specify the type of the button. For simple text buttons, String can be used instead of this object to specify the button text.
  */
 export interface KeyboardButton {
-  /** Text of the button. If none of the fields other than text, icon_custom_emoji_id, and style are used, it will be sent as a message when the button is pressed */
+  /** Text of the button. If none of the fields other than text, icon_custom_emoji_id, and style are used, it will be sent as a message when the button is pressed. */
   text: string;
   /** Optional. Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription. */
   icon_custom_emoji_id?: string;
@@ -1873,7 +1893,7 @@ export interface KeyboardButton {
   request_users?: KeyboardButtonRequestUsers;
   /** Optional. If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a "chat_shared" service message. Available in private chats only. */
   request_chat?: KeyboardButtonRequestChat;
-  /** Optional. If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot. Available for bots that enabled management of other bots in the `@BotFather` Mini App. Available in private chats only. */
+  /** Optional. If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot. Available for bots that enabled management of other bots in the @BotFather Mini App. Available in private chats only. */
   request_managed_bot?: KeyboardButtonRequestManagedBot;
   /** Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only. */
   request_contact?: boolean;
@@ -1889,7 +1909,7 @@ export interface KeyboardButton {
  * This object defines the criteria used to request suitable users. Information about the selected users will be shared with the bot when the corresponding button is pressed. More about requesting users: https://core.telegram.org/bots/features#chat-and-user-selection
  */
 export interface KeyboardButtonRequestUsers {
-  /** Signed 32-bit identifier of the request that will be received back in the UsersShared object. Must be unique within the message */
+  /** Signed 32-bit identifier of the request that will be received back in the UsersShared object. Must be unique within the message. */
   request_id: number;
   /** Optional. Pass True to request bots, pass False to request regular users. If not specified, no additional restrictions are applied. */
   user_is_bot?: boolean;
@@ -1909,9 +1929,9 @@ export interface KeyboardButtonRequestUsers {
  * This object defines the criteria used to request a suitable chat. Information about the selected chat will be shared with the bot when the corresponding button is pressed. The bot will be granted requested rights in the chat if appropriate. More about requesting chats: https://core.telegram.org/bots/features#chat-and-user-selection.
  */
 export interface KeyboardButtonRequestChat {
-  /** Signed 32-bit identifier of the request, which will be received back in the ChatShared object. Must be unique within the message */
+  /** Signed 32-bit identifier of the request, which will be received back in the ChatShared object. Must be unique within the message. */
   request_id: number;
-  /** Pass True to request a channel chat, pass False to request a group or a supergroup chat. */
+  /** Pass True to request a channel chat, pass False to request a group or a supergroup chat */
   chat_is_channel: boolean;
   /** Optional. Pass True to request a forum supergroup, pass False to request a non-forum chat. If not specified, no additional restrictions are applied. */
   chat_is_forum?: boolean;
@@ -1937,7 +1957,7 @@ export interface KeyboardButtonRequestChat {
  * This object defines the parameters for the creation of a managed bot. Information about the created bot will be shared with the bot using the update managed_bot and a Message with the field managed_bot_created.
  */
 export interface KeyboardButtonRequestManagedBot {
-  /** Signed 32-bit identifier of the request. Must be unique within the message */
+  /** Signed 32-bit identifier of the request. Must be unique within the message. */
   request_id: number;
   /** Optional. Suggested name for the bot */
   suggested_name?: string;
@@ -1959,7 +1979,7 @@ export interface KeyboardButtonPollType {
 export interface ReplyKeyboardRemove {
   /** Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup) */
   remove_keyboard: boolean;
-  /** Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are `@mentioned` in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet. */
+  /** Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet. */
   selective?: boolean;
 }
 
@@ -1995,7 +2015,7 @@ export interface InlineKeyboardButton {
   switch_inline_query_current_chat?: string;
   /** Optional. If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field. Not supported for messages sent in channel direct messages chats and on behalf of a business account. */
   switch_inline_query_chosen_chat?: SwitchInlineQueryChosenChat;
-  /** Optional. Description of the button that copies the specified text to the clipboard. */
+  /** Optional. Description of the button that copies the specified text to the clipboard */
   copy_text?: CopyTextButton;
   /** Optional. Description of the game that will be launched when the user presses the button. NOTE: This type of button must always be the first button in the first row. */
   callback_game?: CallbackGame;
@@ -2010,11 +2030,11 @@ export interface InlineKeyboardButton {
 export interface LoginUrl {
   /** An HTTPS URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data. NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization. */
   url: string;
-  /** Optional. New text of the button in forwarded messages. */
+  /** Optional. New text of the button in forwarded messages */
   forward_text?: string;
   /** Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details. */
   bot_username?: string;
-  /** Optional. Pass True to request the permission for your bot to send messages to the user. */
+  /** Optional. Pass True to request the permission for your bot to send messages to the user */
   request_write_access?: boolean;
 }
 
@@ -2022,7 +2042,7 @@ export interface LoginUrl {
  * This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.
  */
 export interface SwitchInlineQueryChosenChat {
-  /** Optional. The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted */
+  /** Optional. The default inline query to be inserted in the input field. If left empty, only the bot's username will be inserted. */
   query?: string;
   /** Optional. True, if private chats with users can be chosen */
   allow_user_chats?: boolean;
@@ -2052,7 +2072,7 @@ export interface CallbackQuery {
   from: User;
   /** Optional. Message sent by the bot with the callback button that originated the query */
   message?: MaybeInaccessibleMessage;
-  /** Optional. Identifier of the message sent via the bot in inline mode, that originated the query. */
+  /** Optional. Identifier of the message sent via the bot in inline mode, that originated the query */
   inline_message_id?: string;
   /** Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games. */
   chat_instance: string;
@@ -2070,7 +2090,7 @@ export interface ForceReply {
   force_reply: boolean;
   /** Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters */
   input_field_placeholder?: string;
-  /** Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are `@mentioned` in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. */
+  /** Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. */
   selective?: boolean;
 }
 
@@ -2170,7 +2190,7 @@ export interface ChatMemberUpdated {
   old_chat_member: ChatMember;
   /** New information about the chat member */
   new_chat_member: ChatMember;
-  /** Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only. */
+  /** Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only */
   invite_link?: ChatInviteLink;
   /** Optional. True, if the user joined the chat after sending a direct join request without using an invite link and being approved by an administrator */
   via_join_request?: boolean;
@@ -2277,7 +2297,7 @@ export interface ChatMemberRestricted {
   user: User;
   /** True, if the user is a member of the chat at the moment of the request */
   is_member: boolean;
-  /** True, if the user is allowed to send text messages, contacts, giveaways, giveaway winners, invoices, locations and venues */
+  /** True, if the user is allowed to send text messages, rich messages, contacts, giveaways, giveaway winners, invoices, locations and venues */
   can_send_messages: boolean;
   /** True, if the user is allowed to send audios */
   can_send_audios: boolean;
@@ -2309,7 +2329,7 @@ export interface ChatMemberRestricted {
   can_pin_messages: boolean;
   /** True, if the user is allowed to create forum topics */
   can_manage_topics: boolean;
-  /** Date when restrictions will be lifted for this user; Unix time. If 0, then the user is restricted forever */
+  /** Date when restrictions will be lifted for this user; Unix time. If 0, then the user is restricted forever. */
   until_date: number;
 }
 
@@ -2331,7 +2351,7 @@ export interface ChatMemberBanned {
   status: string;
   /** Information about the user */
   user: User;
-  /** Date when restrictions will be lifted for this user; Unix time. If 0, then the user is banned forever */
+  /** Date when restrictions will be lifted for this user; Unix time. If 0, then the user is banned forever. */
   until_date: number;
 }
 
@@ -2347,17 +2367,19 @@ export interface ChatJoinRequest {
   user_chat_id: number;
   /** Date the request was sent in Unix time */
   date: number;
-  /** Optional. Bio of the user. */
+  /** Optional. Bio of the user */
   bio?: string;
   /** Optional. Chat invite link that was used by the user to send the join request */
   invite_link?: ChatInviteLink;
+  /** Optional. Identifier of the join request query. If present, then the bot must call sendChatJoinRequestWebApp or directly call answerChatJoinRequestQuery within 10 seconds. */
+  query_id?: string;
 }
 
 /**
  * Describes actions that a non-administrator user is allowed to take in a chat.
  */
 export interface ChatPermissions {
-  /** Optional. True, if the user is allowed to send text messages, contacts, giveaways, giveaway winners, invoices, locations and venues */
+  /** Optional. True, if the user is allowed to send text messages, rich messages, contacts, giveaways, giveaway winners, invoices, locations and venues */
   can_send_messages?: boolean;
   /** Optional. True, if the user is allowed to send audios */
   can_send_audios?: boolean;
@@ -2381,13 +2403,13 @@ export interface ChatPermissions {
   can_react_to_messages?: boolean;
   /** Optional. True, if the user is allowed to edit their own tag. If omitted, defaults to the value of can_pin_messages. */
   can_edit_tag?: boolean;
-  /** Optional. True, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups */
+  /** Optional. True, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups. */
   can_change_info?: boolean;
   /** Optional. True, if the user is allowed to invite new users to the chat */
   can_invite_users?: boolean;
-  /** Optional. True, if the user is allowed to pin messages. Ignored in public supergroups */
+  /** Optional. True, if the user is allowed to pin messages. Ignored in public supergroups. */
   can_pin_messages?: boolean;
-  /** Optional. True, if the user is allowed to create forum topics. If omitted defaults to the value of can_pin_messages */
+  /** Optional. True, if the user is allowed to create forum topics. If omitted defaults to the value of can_pin_messages. */
   can_manage_topics?: boolean;
 }
 
@@ -2597,7 +2619,7 @@ export type ReactionType = ReactionTypeEmoji | ReactionTypeCustomEmoji | Reactio
 export interface ReactionTypeEmoji {
   /** Type of the reaction, always "emoji" */
   type: string;
-  /** Reaction emoji. Currently, it can be one of "❤", "👍", "👎", "🔥", "🥰", "👏", "😁", "🤔", "🤯", "😱", "🤬", "😢", "🎉", "🤩", "🤮", "💩", "🙏", "👌", "🕊", "🤡", "🥱", "🥴", "😍", "🐳", "❤‍🔥", "🌚", "🌭", "💯", "🤣", "⚡", "🍌", "🏆", "💔", "🤨", "😐", "🍓", "🍾", "💋", "🖕", "😈", "😴", "😭", "🤓", "👻", "👨‍💻", "👀", "🎃", "🙈", "😇", "😨", "🤝", "✍", "🤗", "🫡", "🎅", "🎄", "☃", "💅", "🤪", "🗿", "🆒", "💘", "🙉", "🦄", "😘", "💊", "🙊", "😎", "👾", "🤷‍♂", "🤷", "🤷‍♀", "😡" */
+  /** Reaction emoji. Currently, it can be one of "❤", "👍", "👎", "🔥", "🥰", "👏", "😁", "🤔", "🤯", "😱", "🤬", "😢", "🎉", "🤩", "🤮", "💩", "🙏", "👌", "🕊", "🤡", "🥱", "🥴", "😍", "🐳", "❤‍🔥", "🌚", "🌭", "💯", "🤣", "⚡", "🍌", "🏆", "💔", "🤨", "😐", "🍓", "🍾", "💋", "🖕", "😈", "😴", "😭", "🤓", "👻", "👨‍💻", "👀", "🎃", "🙈", "😇", "😨", "🤝", "✍", "🤗", "🫡", "🎅", "🎄", "☃", "💅", "🤪", "🗿", "🆒", "💘", "🙉", "🦄", "😘", "💊", "🙊", "😎", "👾", "🤷‍♂", "🤷", "🤷‍♀", "😡". */
   emoji: string;
 }
 
@@ -2809,7 +2831,7 @@ export interface UniqueGift {
   gift_id: string;
   /** Human-readable name of the regular gift from which this unique gift was upgraded */
   base_name: string;
-  /** Unique name of the gift. This name can be used in https://t.me/nft/... links and story areas */
+  /** Unique name of the gift. This name can be used in https://t.me/nft/... links and story areas. */
   name: string;
   /** Unique number of the upgraded gift among gifts upgraded from the same regular gift */
   number: number;
@@ -2853,7 +2875,7 @@ export interface GiftInfo {
   entities?: MessageEntity[];
   /** Optional. True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them */
   is_private?: boolean;
-  /** Optional. Unique number reserved for this gift when upgraded. See the number field in UniqueGift */
+  /** Optional. Unique number reserved for this gift when upgraded. See the number field in UniqueGift. */
   unique_gift_number?: number;
 }
 
@@ -2863,7 +2885,7 @@ export interface GiftInfo {
 export interface UniqueGiftInfo {
   /** Information about the gift */
   gift: UniqueGift;
-  /** Origin of the gift. Currently, either "upgrade" for gifts upgraded from regular gifts, "transfer" for gifts transferred from other users or channels, "resale" for gifts bought from other users, "gifted_upgrade" for upgrades purchased after the gift was sent, or "offer" for gifts bought or sold through gift purchase offers */
+  /** Origin of the gift. Currently, either "upgrade" for gifts upgraded from regular gifts, "transfer" for gifts transferred from other users or channels, "resale" for gifts bought from other users, "gifted_upgrade" for upgrades purchased after the gift was sent, or "offer" for gifts bought or sold through gift purchase offers. */
   origin: string;
   /** Optional. For gifts bought from other users, the currency in which the payment for the gift was done. Currently, one of "XTR" for Telegram Stars or "TON" for toncoins. */
   last_resale_currency?: string;
@@ -2873,7 +2895,7 @@ export interface UniqueGiftInfo {
   owned_gift_id?: string;
   /** Optional. Number of Telegram Stars that must be paid to transfer the gift; omitted if the bot cannot transfer the gift */
   transfer_star_count?: number;
-  /** Optional. Point in time (Unix timestamp) when the gift can be transferred. If it is in the past, then the gift can be transferred now */
+  /** Optional. Point in time (Unix timestamp) when the gift can be transferred. If it is in the past, then the gift can be transferred now. */
   next_transfer_date?: number;
 }
 
@@ -2916,7 +2938,7 @@ export interface OwnedGiftRegular {
   prepaid_upgrade_star_count?: number;
   /** Optional. True, if the gift's upgrade was purchased after the gift was sent; for gifts received on behalf of business accounts only */
   is_upgrade_separate?: boolean;
-  /** Optional. Unique number reserved for this gift when upgraded. See the number field in UniqueGift */
+  /** Optional. Unique number reserved for this gift when upgraded. See the number field in UniqueGift. */
   unique_gift_number?: number;
 }
 
@@ -2940,7 +2962,7 @@ export interface OwnedGiftUnique {
   can_be_transferred?: boolean;
   /** Optional. Number of Telegram Stars that must be paid to transfer the gift; omitted if the bot cannot transfer the gift */
   transfer_star_count?: number;
-  /** Optional. Point in time (Unix timestamp) when the gift can be transferred. If it is in the past, then the gift can be transferred now */
+  /** Optional. Point in time (Unix timestamp) when the gift can be transferred. If it is in the past, then the gift can be transferred now. */
   next_transfer_date?: number;
 }
 
@@ -2952,7 +2974,7 @@ export interface OwnedGifts {
   total_count: number;
   /** The list of gifts */
   gifts: OwnedGift[];
-  /** Optional. Offset for the next request. If empty, then there are no more results */
+  /** Optional. Offset for the next request. If empty, then there are no more results. */
   next_offset?: string;
 }
 
@@ -2998,7 +3020,7 @@ export interface StarAmount {
 export interface BotCommand {
   /** Text of the command; 1-32 characters. Can contain only lowercase English letters, digits and underscores. */
   command: string;
-  /** Description of the command; 1-256 characters. */
+  /** Description of the command; 1-256 characters */
   description: string;
 }
 
@@ -3052,7 +3074,7 @@ export interface BotCommandScopeAllChatAdministrators {
 export interface BotCommandScopeChat {
   /** Scope type, must be chat */
   type: string;
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username`. Channel direct messages chats and channel chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username. Channel direct messages chats and channel chats aren't supported. */
   chat_id: number | string;
 }
 
@@ -3062,7 +3084,7 @@ export interface BotCommandScopeChat {
 export interface BotCommandScopeChatAdministrators {
   /** Scope type, must be chat_administrators */
   type: string;
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username`. Channel direct messages chats and channel chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username. Channel direct messages chats and channel chats aren't supported. */
   chat_id: number | string;
 }
 
@@ -3072,7 +3094,7 @@ export interface BotCommandScopeChatAdministrators {
 export interface BotCommandScopeChatMember {
   /** Scope type, must be chat_member */
   type: string;
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username`. Channel direct messages chats and channel chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username. Channel direct messages chats and channel chats aren't supported. */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -3331,7 +3353,7 @@ export interface SentGuestMessage {
 export interface PreparedInlineMessage {
   /** Unique identifier of the prepared message */
   id: string;
-  /** Expiration date of the prepared message, in Unix time. Expired prepared messages can no longer be used */
+  /** Expiration date of the prepared message, in Unix time. Expired prepared messages can no longer be used. */
   expiration_date: number;
 }
 
@@ -3368,7 +3390,7 @@ export type InputMedia = InputMediaAnimation | InputMediaAudio | InputMediaDocum
  * Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
  */
 export interface InputMediaAnimation {
-  /** Type of the result, must be animation */
+  /** Type of the media, must be animation */
   type: string;
   /** File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files */
   media: string;
@@ -3396,7 +3418,7 @@ export interface InputMediaAnimation {
  * Represents an audio file to be treated as music to be sent.
  */
 export interface InputMediaAudio {
-  /** Type of the result, must be audio */
+  /** Type of the media, must be audio */
   type: string;
   /** File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files */
   media: string;
@@ -3420,7 +3442,7 @@ export interface InputMediaAudio {
  * Represents a general file to be sent.
  */
 export interface InputMediaDocument {
-  /** Type of the result, must be document */
+  /** Type of the media, must be document */
   type: string;
   /** File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files */
   media: string;
@@ -3437,10 +3459,20 @@ export interface InputMediaDocument {
 }
 
 /**
+ * Represents an HTTP link to be sent.
+ */
+export interface InputMediaLink {
+  /** Type of the media, must be link */
+  type: string;
+  /** HTTP URL of the link */
+  url: string;
+}
+
+/**
  * Represents a live photo to be sent.
  */
 export interface InputMediaLivePhoto {
-  /** Type of the result, must be live_photo */
+  /** Type of the media, must be live_photo */
   type: string;
   /** Video of the live photo to send. Pass a file_id to send a file that exists on the Telegram servers (recommended) or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files. Sending live photos by a URL is currently unsupported. */
   media: string;
@@ -3462,7 +3494,7 @@ export interface InputMediaLivePhoto {
  * Represents a location to be sent.
  */
 export interface InputMediaLocation {
-  /** Type of the result, must be location */
+  /** Type of the media, must be location */
   type: string;
   /** Latitude of the location */
   latitude: number;
@@ -3476,7 +3508,7 @@ export interface InputMediaLocation {
  * Represents a photo to be sent.
  */
 export interface InputMediaPhoto {
-  /** Type of the result, must be photo */
+  /** Type of the media, must be photo */
   type: string;
   /** File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files */
   media: string;
@@ -3496,7 +3528,7 @@ export interface InputMediaPhoto {
  * Represents a sticker file to be sent.
  */
 export interface InputMediaSticker {
-  /** Type of the result, must be sticker */
+  /** Type of the media, must be sticker */
   type: string;
   /** File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a .WEBP sticker from the Internet, or pass "attach://<file_attach_name>" to upload a new .WEBP, .TGS, or .WEBM sticker using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files */
   media: string;
@@ -3508,7 +3540,7 @@ export interface InputMediaSticker {
  * Represents a venue to be sent.
  */
 export interface InputMediaVenue {
-  /** Type of the result, must be venue */
+  /** Type of the media, must be venue */
   type: string;
   /** Latitude of the location */
   latitude: number;
@@ -3532,7 +3564,7 @@ export interface InputMediaVenue {
  * Represents a video to be sent.
  */
 export interface InputMediaVideo {
-  /** Type of the result, must be video */
+  /** Type of the media, must be video */
   type: string;
   /** File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More information on Sending Files: https://core.telegram.org/bots/api#sending-files */
   media: string;
@@ -3767,6 +3799,666 @@ export interface InputSticker {
 }
 
 /**
+ * Rich formatted message.
+ */
+export interface RichMessage {
+  /** Content of the message */
+  blocks: RichBlock[];
+  /** Optional. True, if the rich message must be shown right-to-left */
+  is_rtl?: boolean;
+}
+
+/**
+ * Describes a rich message to be sent. Exactly one of the fields html or markdown must be used.
+ */
+export interface InputRichMessage {
+  /** Optional. Content of the rich message to send described using HTML formatting. See rich message formatting options for more details. */
+  html?: string;
+  /** Optional. Content of the rich message to send described using Markdown formatting. See rich message formatting options for more details. */
+  markdown?: string;
+  /** Optional. Pass True if the rich message must be shown right-to-left */
+  is_rtl?: boolean;
+  /** Optional. Pass True to skip automatic detection of entities (e.g., URLs, email addresses, username mentions, hashtags, cashtags, bot commands, or phone numbers) in the text */
+  skip_entity_detection?: boolean;
+}
+
+/**
+ * This object represents a rich formatted text. Currently, it can be either a String for plain text, an Array of RichText, or any of the following types:
+ * - RichTextBold
+ * - RichTextItalic
+ * - RichTextUnderline
+ * - RichTextStrikethrough
+ * - RichTextSpoiler
+ * - RichTextDateTime
+ * - RichTextTextMention
+ * - RichTextSubscript
+ * - RichTextSuperscript
+ * - RichTextMarked
+ * - RichTextCode
+ * - RichTextCustomEmoji
+ * - RichTextMathematicalExpression
+ * - RichTextUrl
+ * - RichTextEmailAddress
+ * - RichTextPhoneNumber
+ * - RichTextBankCardNumber
+ * - RichTextMention
+ * - RichTextHashtag
+ * - RichTextCashtag
+ * - RichTextBotCommand
+ * - RichTextAnchor
+ * - RichTextAnchorLink
+ * - RichTextReference
+ * - RichTextReferenceLink
+ */
+export type RichText = string | RichText[] | RichTextBold | RichTextItalic | RichTextUnderline | RichTextStrikethrough | RichTextSpoiler | RichTextDateTime | RichTextTextMention | RichTextSubscript | RichTextSuperscript | RichTextMarked | RichTextCode | RichTextCustomEmoji | RichTextMathematicalExpression | RichTextUrl | RichTextEmailAddress | RichTextPhoneNumber | RichTextBankCardNumber | RichTextMention | RichTextHashtag | RichTextCashtag | RichTextBotCommand | RichTextAnchor | RichTextAnchorLink | RichTextReference | RichTextReferenceLink;
+
+/**
+ * A bold text.
+ */
+export interface RichTextBold {
+  /** Type of the rich text, always "bold" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * An italicized text.
+ */
+export interface RichTextItalic {
+  /** Type of the rich text, always "italic" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * An underlined text.
+ */
+export interface RichTextUnderline {
+  /** Type of the rich text, always "underline" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * A strikethrough text.
+ */
+export interface RichTextStrikethrough {
+  /** Type of the rich text, always "strikethrough" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * A text covered by a spoiler.
+ */
+export interface RichTextSpoiler {
+  /** Type of the rich text, always "spoiler" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * Formatted date and time.
+ */
+export interface RichTextDateTime {
+  /** Type of the rich text, always "date_time" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The Unix time associated with the entity */
+  unix_time: number;
+  /** The string that defines the formatting of the date and time. See date-time entity formatting for more details. */
+  date_time_format: string;
+}
+
+/**
+ * A mention of a Telegram user by their identifier.
+ */
+export interface RichTextTextMention {
+  /** Type of the rich text, always "text_mention" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The mentioned user */
+  user: User;
+}
+
+/**
+ * A subscript text.
+ */
+export interface RichTextSubscript {
+  /** Type of the rich text, always "subscript" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * A superscript text.
+ */
+export interface RichTextSuperscript {
+  /** Type of the rich text, always "superscript" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * A marked text.
+ */
+export interface RichTextMarked {
+  /** Type of the rich text, always "marked" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * A monowidth text.
+ */
+export interface RichTextCode {
+  /** Type of the rich text, always "code" */
+  type: string;
+  /** The text */
+  text: RichText;
+}
+
+/**
+ * A custom emoji.
+ */
+export interface RichTextCustomEmoji {
+  /** Type of the rich text, always "custom_emoji" */
+  type: string;
+  /** Unique identifier of the custom emoji. Use getCustomEmojiStickers to get full information about the sticker. */
+  custom_emoji_id: string;
+  /** Alternative emoji for the custom emoji */
+  alternative_text: string;
+}
+
+/**
+ * A mathematical expression.
+ */
+export interface RichTextMathematicalExpression {
+  /** Type of the rich text, always "mathematical_expression" */
+  type: string;
+  /** The expression in LaTeX format */
+  expression: string;
+}
+
+/**
+ * A text with a link.
+ */
+export interface RichTextUrl {
+  /** Type of the rich text, always "url" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** URL of the link */
+  url: string;
+}
+
+/**
+ * A text with an email address.
+ */
+export interface RichTextEmailAddress {
+  /** Type of the rich text, always "email_address" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The email address */
+  email_address: string;
+}
+
+/**
+ * A text with a phone number.
+ */
+export interface RichTextPhoneNumber {
+  /** Type of the rich text, always "phone_number" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The phone number */
+  phone_number: string;
+}
+
+/**
+ * A text with a bank card number.
+ */
+export interface RichTextBankCardNumber {
+  /** Type of the rich text, always "bank_card_number" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The bank card number */
+  bank_card_number: string;
+}
+
+/**
+ * A mention by a username.
+ */
+export interface RichTextMention {
+  /** Type of the rich text, always "mention" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The username */
+  username: string;
+}
+
+/**
+ * A hashtag.
+ */
+export interface RichTextHashtag {
+  /** Type of the rich text, always "hashtag" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The hashtag */
+  hashtag: string;
+}
+
+/**
+ * A cashtag.
+ */
+export interface RichTextCashtag {
+  /** Type of the rich text, always "cashtag" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The cashtag */
+  cashtag: string;
+}
+
+/**
+ * A bot command.
+ */
+export interface RichTextBotCommand {
+  /** Type of the rich text, always "bot_command" */
+  type: string;
+  /** The text */
+  text: RichText;
+  /** The bot command */
+  bot_command: string;
+}
+
+/**
+ * An anchor.
+ */
+export interface RichTextAnchor {
+  /** Type of the rich text, always "anchor" */
+  type: string;
+  /** The name of the anchor */
+  name: string;
+}
+
+/**
+ * A link to an anchor.
+ */
+export interface RichTextAnchorLink {
+  /** Type of the rich text, always "anchor_link" */
+  type: string;
+  /** The link text */
+  text: RichText;
+  /** The name of the anchor. If the name is empty, then the link brings back to the top of the message. */
+  anchor_name: string;
+}
+
+/**
+ * A reference.
+ */
+export interface RichTextReference {
+  /** Type of the rich text, always "reference" */
+  type: string;
+  /** Text of the reference */
+  text: RichText;
+  /** The name of the reference */
+  name: string;
+}
+
+/**
+ * A link to a reference.
+ */
+export interface RichTextReferenceLink {
+  /** Type of the rich text, always "reference_link" */
+  type: string;
+  /** The link text */
+  text: RichText;
+  /** The name of the reference */
+  reference_name: string;
+}
+
+/**
+ * Caption of a rich formatted block.
+ */
+export interface RichBlockCaption {
+  /** Block caption */
+  text: RichText;
+  /** Optional. Block credit which corresponds to the HTML tag <cite> */
+  credit?: RichText;
+}
+
+/**
+ * Cell in a table.
+ */
+export interface RichBlockTableCell {
+  /** Optional. Text in the cell. If omitted, then the cell is invisible. */
+  text?: RichText;
+  /** Optional. True, if the cell is a header cell */
+  is_header?: boolean;
+  /** Optional. The number of columns the cell spans if it is bigger than 1 */
+  colspan?: number;
+  /** Optional. The number of rows the cell spans if it is bigger than 1 */
+  rowspan?: number;
+  /** Horizontal cell content alignment. Currently, must be one of "left", "center", or "right". */
+  align: string;
+  /** Vertical cell content alignment. Currently, must be one of "top", "middle", or "bottom". */
+  valign: string;
+}
+
+/**
+ * An item of a list.
+ */
+export interface RichBlockListItem {
+  /** Label of the item */
+  label: string;
+  /** The content of the item */
+  blocks: RichBlock[];
+  /** Optional. True, if the item has a checkbox */
+  has_checkbox?: boolean;
+  /** Optional. True, if the item has a checked checkbox */
+  is_checked?: boolean;
+  /** Optional. For ordered lists, the numeric value of the item label */
+  value?: number;
+  /** Optional. For ordered lists, the type of the item label; must be one of "a" for lowercase letters, "A" for uppercase letters, "i" for lowercase Roman numerals, "I" for uppercase Roman numerals, or "1" for decimal numbers */
+  type?: string;
+}
+
+/**
+ * This object represents a block in a rich formatted message. Currently, it can be any of the following types:
+ * - RichBlockParagraph
+ * - RichBlockSectionHeading
+ * - RichBlockPreformatted
+ * - RichBlockFooter
+ * - RichBlockDivider
+ * - RichBlockMathematicalExpression
+ * - RichBlockAnchor
+ * - RichBlockList
+ * - RichBlockBlockQuotation
+ * - RichBlockPullQuotation
+ * - RichBlockCollage
+ * - RichBlockSlideshow
+ * - RichBlockTable
+ * - RichBlockDetails
+ * - RichBlockMap
+ * - RichBlockAnimation
+ * - RichBlockAudio
+ * - RichBlockPhoto
+ * - RichBlockVideo
+ * - RichBlockVoiceNote
+ * - RichBlockThinking
+ */
+export type RichBlock = RichBlockParagraph | RichBlockSectionHeading | RichBlockPreformatted | RichBlockFooter | RichBlockDivider | RichBlockMathematicalExpression | RichBlockAnchor | RichBlockList | RichBlockBlockQuotation | RichBlockPullQuotation | RichBlockCollage | RichBlockSlideshow | RichBlockTable | RichBlockDetails | RichBlockMap | RichBlockAnimation | RichBlockAudio | RichBlockPhoto | RichBlockVideo | RichBlockVoiceNote | RichBlockThinking;
+
+/**
+ * A text paragraph, corresponding to the HTML tag <p>.
+ */
+export interface RichBlockParagraph {
+  /** Type of the block, always "paragraph" */
+  type: string;
+  /** Text of the block */
+  text: RichText;
+}
+
+/**
+ * A section heading, corresponding to the HTML tags <h1>, <h2>, <h3>, <h4>, <h5>, or <h6>.
+ */
+export interface RichBlockSectionHeading {
+  /** Type of the block, always "heading" */
+  type: string;
+  /** Text of the block */
+  text: RichText;
+  /** Relative size of the text font; 1-6, 1 is the largest, 6 is the smallest */
+  size: number;
+}
+
+/**
+ * A preformatted text block, corresponding to the nested HTML tags <pre> and <code>.
+ */
+export interface RichBlockPreformatted {
+  /** Type of the block, always "pre" */
+  type: string;
+  /** Text of the block */
+  text: RichText;
+  /** Optional. The programming language of the text */
+  language?: string;
+}
+
+/**
+ * A footer, corresponding to the HTML tag <footer>.
+ */
+export interface RichBlockFooter {
+  /** Type of the block, always "footer" */
+  type: string;
+  /** Text of the block */
+  text: RichText;
+}
+
+/**
+ * A divider, corresponding to the HTML tag <hr/>.
+ */
+export interface RichBlockDivider {
+  /** Type of the block, always "divider" */
+  type: string;
+}
+
+/**
+ * A block with a mathematical expression in LaTeX format, corresponding to the custom HTML tag <tg-math-block>.
+ */
+export interface RichBlockMathematicalExpression {
+  /** Type of the block, always "mathematical_expression" */
+  type: string;
+  /** The mathematical expression in LaTeX format */
+  expression: string;
+}
+
+/**
+ * A block with an anchor, corresponding to the HTML tag <a> with the attribute name.
+ */
+export interface RichBlockAnchor {
+  /** Type of the block, always "anchor" */
+  type: string;
+  /** The name of the anchor */
+  name: string;
+}
+
+/**
+ * A list of blocks, corresponding to the HTML tag <ul> or <ol> with multiple nested tags <li>.
+ */
+export interface RichBlockList {
+  /** Type of the block, always "list" */
+  type: string;
+  /** Items of the list */
+  items: RichBlockListItem[];
+}
+
+/**
+ * A block quotation, corresponding to the HTML tag <blockquote>.
+ */
+export interface RichBlockBlockQuotation {
+  /** Type of the block, always "blockquote" */
+  type: string;
+  /** Content of the block */
+  blocks: RichBlock[];
+  /** Optional. Credit of the block */
+  credit?: RichText;
+}
+
+/**
+ * A quotation with centered text, loosely corresponding to the HTML tag <aside>.
+ */
+export interface RichBlockPullQuotation {
+  /** Type of the block, always "pullquote" */
+  type: string;
+  /** Text of the block */
+  text: RichText;
+  /** Optional. Credit of the block */
+  credit?: RichText;
+}
+
+/**
+ * A collage, corresponding to the custom HTML tag <tg-collage>.
+ */
+export interface RichBlockCollage {
+  /** Type of the block, always "collage" */
+  type: string;
+  /** Elements of the collage */
+  blocks: RichBlock[];
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A slideshow, corresponding to the custom HTML tag <tg-slideshow>.
+ */
+export interface RichBlockSlideshow {
+  /** Type of the block, always "slideshow" */
+  type: string;
+  /** Elements of the slideshow */
+  blocks: RichBlock[];
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A table, corresponding to the HTML tag <table>.
+ */
+export interface RichBlockTable {
+  /** Type of the block, always "table" */
+  type: string;
+  /** Cells of the table */
+  cells: RichBlockTableCell[][];
+  /** Optional. True, if the table has borders */
+  is_bordered?: boolean;
+  /** Optional. True, if the table is striped */
+  is_striped?: boolean;
+  /** Optional. Caption of the table */
+  caption?: RichText;
+}
+
+/**
+ * An expandable block for details disclosure, corresponding to the HTML tag <details>.
+ */
+export interface RichBlockDetails {
+  /** Type of the block, always "details" */
+  type: string;
+  /** Always shown summary of the block */
+  summary: RichText;
+  /** Content of the block */
+  blocks: RichBlock[];
+  /** Optional. True, if the content of the block is visible by default */
+  is_open?: boolean;
+}
+
+/**
+ * A block with a map, corresponding to the custom HTML tag <tg-map>.
+ */
+export interface RichBlockMap {
+  /** Type of the block, always "map" */
+  type: string;
+  /** Location of the center of the map */
+  location: Location;
+  /** Map zoom level; 13-20 */
+  zoom: number;
+  /** Expected width of the map */
+  width: number;
+  /** Expected height of the map */
+  height: number;
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A block with an animation, corresponding to the HTML tag <video>.
+ */
+export interface RichBlockAnimation {
+  /** Type of the block, always "animation" */
+  type: string;
+  /** The animation */
+  animation: Animation;
+  /** Optional. True, if the media preview is covered by a spoiler animation */
+  has_spoiler?: boolean;
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A block with a music file, corresponding to the HTML tag <audio>.
+ */
+export interface RichBlockAudio {
+  /** Type of the block, always "audio" */
+  type: string;
+  /** The audio */
+  audio: Audio;
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A block with a photo, corresponding to the HTML tag <photo>.
+ */
+export interface RichBlockPhoto {
+  /** Type of the block, always "photo" */
+  type: string;
+  /** Available sizes of the photo */
+  photo: PhotoSize[];
+  /** Optional. True, if the media preview is covered by a spoiler animation */
+  has_spoiler?: boolean;
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A block with a video, corresponding to the HTML tag <video>.
+ */
+export interface RichBlockVideo {
+  /** Type of the block, always "video" */
+  type: string;
+  /** The video */
+  video: Video;
+  /** Optional. True, if the media preview is covered by a spoiler animation */
+  has_spoiler?: boolean;
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A block with a voice note, corresponding to the HTML tag <audio>.
+ */
+export interface RichBlockVoiceNote {
+  /** Type of the block, always "voice_note" */
+  type: string;
+  /** The voice note */
+  voice_note: Voice;
+  /** Optional. Caption of the block */
+  caption?: RichBlockCaption;
+}
+
+/**
+ * A block with a "Thinking..." placeholder, corresponding to the custom HTML tag <tg-thinking>. The block may be used only in sendRichMessageDraft, therefore it can't be received in messages. See https://t.me/addemoji/AIActions for examples of custom emoji, which are recommended for usage in the block.
+ */
+export interface RichBlockThinking {
+  /** Type of the block, always "thinking" */
+  type: string;
+  /** Text of the block. See https://t.me/addemoji/AIActions for examples of custom emoji, which are recommended for usage in the block. */
+  text: RichText;
+}
+
+/**
  * This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
  */
 export interface InlineQuery {
@@ -3778,7 +4470,7 @@ export interface InlineQuery {
   query: string;
   /** Offset of the results to be returned, can be controlled by the bot */
   offset: string;
-  /** Optional. Type of the chat from which the inline query was sent. Can be either "sender" for a private chat with the inline query sender, "private", "group", "supergroup", or "channel". The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat */
+  /** Optional. Type of the chat from which the inline query was sent. Can be either "sender" for a private chat with the inline query sender, "private", "group", "supergroup", or "channel". The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat. */
   chat_type?: string;
   /** Optional. Sender location, only for bots that request user location */
   location?: Location;
@@ -3856,7 +4548,7 @@ export interface InlineQueryResultPhoto {
   type: string;
   /** Unique identifier for this result, 1-64 bytes */
   id: string;
-  /** A valid URL of the photo. Photo must be in JPEG format. Photo size must not exceed 5MB */
+  /** A valid URL of the photo. Photo must be in JPEG format. Photo size must not exceed 5MB. */
   photo_url: string;
   /** URL of the thumbnail for the photo */
   thumbnail_url: string;
@@ -3900,7 +4592,7 @@ export interface InlineQueryResultGif {
   gif_duration?: number;
   /** URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result */
   thumbnail_url: string;
-  /** Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg" */
+  /** Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg". */
   thumbnail_mime_type?: string;
   /** Optional. Title for the result */
   title?: string;
@@ -3936,7 +4628,7 @@ export interface InlineQueryResultMpeg4Gif {
   mpeg4_duration?: number;
   /** URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result */
   thumbnail_url: string;
-  /** Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg" */
+  /** Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg". */
   thumbnail_mime_type?: string;
   /** Optional. Title for the result */
   title?: string;
@@ -4096,7 +4788,7 @@ export interface InlineQueryResultLocation {
   title: string;
   /** Optional. The radius of uncertainty for the location, measured in meters; 0-1500 */
   horizontal_accuracy?: number;
-  /** Optional. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely. */
+  /** Optional. Period in seconds during which the location can be updated, must be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely */
   live_period?: number;
   /** Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified. */
   heading?: number;
@@ -4389,14 +5081,15 @@ export interface InlineQueryResultCachedAudio {
 }
 
 /**
- * This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:
+ * This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following types:
  * - InputTextMessageContent
+ * - InputRichMessageContent
  * - InputLocationMessageContent
  * - InputVenueMessageContent
  * - InputContactMessageContent
  * - InputInvoiceMessageContent
  */
-export type InputMessageContent = InputTextMessageContent | InputLocationMessageContent | InputVenueMessageContent | InputContactMessageContent | InputInvoiceMessageContent;
+export type InputMessageContent = InputTextMessageContent | InputRichMessageContent | InputLocationMessageContent | InputVenueMessageContent | InputContactMessageContent | InputInvoiceMessageContent;
 
 /**
  * Represents the content of a text message to be sent as the result of an inline query.
@@ -4413,6 +5106,14 @@ export interface InputTextMessageContent {
 }
 
 /**
+ * Represents the content of a rich message to be sent as the result of an inline query.
+ */
+export interface InputRichMessageContent {
+  /** The message to be sent */
+  rich_message: InputRichMessage;
+}
+
+/**
  * Represents the content of a location message to be sent as the result of an inline query.
  */
 export interface InputLocationMessageContent {
@@ -4422,7 +5123,7 @@ export interface InputLocationMessageContent {
   longitude: number;
   /** Optional. The radius of uncertainty for the location, measured in meters; 0-1500 */
   horizontal_accuracy?: number;
-  /** Optional. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely. */
+  /** Optional. Period in seconds during which the location can be updated, must be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely */
   live_period?: number;
   /** Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified. */
   heading?: number;
@@ -4476,7 +5177,7 @@ export interface InputInvoiceMessageContent {
   description: string;
   /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use it for your internal processes. */
   payload: string;
-  /** Optional. Payment provider token, obtained via `@BotFather`. Pass an empty string for payments in Telegram Stars. */
+  /** Optional. Payment provider token, obtained via @BotFather. Pass an empty string for payments in Telegram Stars. */
   provider_token?: string;
   /** Three-letter ISO 4217 currency code, see more on currencies. Pass "XTR" for payments in Telegram Stars. */
   currency: string;
@@ -4514,7 +5215,7 @@ export interface InputInvoiceMessageContent {
 
 /**
  * Represents a result of an inline query that was chosen by the user and sent to their chat partner.
- * Note: It is necessary to enable inline feedback via `@BotFather` in order to receive these objects in updates.
+ * Note: It is necessary to enable inline feedback via @BotFather in order to receive these objects in updates.
  */
 export interface ChosenInlineResult {
   /** The unique identifier for the result that was chosen */
@@ -4629,7 +5330,7 @@ export interface SuccessfulPayment {
  * This object contains basic information about a refunded payment.
  */
 export interface RefundedPayment {
-  /** Three-letter ISO 4217 currency code, or "XTR" for payments in Telegram Stars. Currently, always "XTR" */
+  /** Three-letter ISO 4217 currency code, or "XTR" for payments in Telegram Stars. Currently, always "XTR". */
   currency: string;
   /** Total refunded price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45, total_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). */
   total_amount: number;
@@ -4847,9 +5548,9 @@ export interface StarTransaction {
   nanostar_amount?: number;
   /** Date the transaction was created in Unix time */
   date: number;
-  /** Optional. Source of an incoming transaction (e.g., a user purchasing goods or services, Fragment refunding a failed withdrawal). Only for incoming transactions */
+  /** Optional. Source of an incoming transaction (e.g., a user purchasing goods or services, Fragment refunding a failed withdrawal). Only for incoming transactions. */
   source?: TransactionPartner;
-  /** Optional. Receiver of an outgoing transaction (e.g., a user for a purchase refund, Fragment for a withdrawal). Only for outgoing transactions */
+  /** Optional. Receiver of an outgoing transaction (e.g., a user for a purchase refund, Fragment for a withdrawal). Only for outgoing transactions. */
   receiver?: TransactionPartner;
 }
 
@@ -5073,13 +5774,13 @@ export interface Game {
   title: string;
   /** Description of the game */
   description: string;
-  /** Photo that will be displayed in the game message in chats. */
+  /** Photo that will be displayed in the game message in chats */
   photo: PhotoSize[];
   /** Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters. */
   text?: string;
   /** Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc. */
   text_entities?: MessageEntity[];
-  /** Optional. Animation that will be displayed in the game message in chats. Upload via BotFather */
+  /** Optional. Animation that will be displayed in the game message in chats. Upload via BotFather. */
   animation?: Animation;
 }
 
@@ -5117,7 +5818,7 @@ export interface GetUpdatesParams {
 }
 
 export interface SetWebhookParams {
-  /** HTTPS URL to send updates to. Use an empty string to remove webhook integration */
+  /** HTTPS URL to send updates to. Use an empty string to remove webhook integration. */
   url: string;
   /** Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details. */
   certificate?: InputFile;
@@ -5141,7 +5842,7 @@ export interface DeleteWebhookParams {
 export interface SendMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5167,18 +5868,18 @@ export interface SendMessageParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface ForwardMessageParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the message will be forwarded; required if the message is forwarded to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format `@username`) */
+  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format @username) */
   from_chat_id: number | string;
   /** New start timestamp for the forwarded video in the message */
   video_start_timestamp?: number;
@@ -5195,13 +5896,13 @@ export interface ForwardMessageParams {
 }
 
 export interface ForwardMessagesParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the messages will be forwarded; required if the messages are forwarded to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format `@username`) */
+  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format @username) */
   from_chat_id: number | string;
   /** A JSON-serialized list of 1-100 identifiers of messages in the chat from_chat_id to forward. The identifiers must be specified in a strictly increasing order. */
   message_ids: number[];
@@ -5212,19 +5913,19 @@ export interface ForwardMessagesParams {
 }
 
 export interface CopyMessageParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format `@username`) */
+  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format @username) */
   from_chat_id: number | string;
   /** Message identifier in the chat specified in from_chat_id */
   message_id: number;
   /** New start timestamp for the copied video in the message */
   video_start_timestamp?: number;
-  /** New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept */
+  /** New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept. */
   caption?: string;
   /** Mode for parsing entities in the new caption. See formatting options for more details. */
   parse_mode?: string;
@@ -5244,18 +5945,18 @@ export interface CopyMessageParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface CopyMessagesParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the messages will be sent; required if the messages are sent to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format `@username`) */
+  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format @username) */
   from_chat_id: number | string;
   /** A JSON-serialized list of 1-100 identifiers of messages in the chat from_chat_id to copy. The identifiers must be specified in a strictly increasing order. */
   message_ids: number[];
@@ -5270,7 +5971,7 @@ export interface CopyMessagesParams {
 export interface SendPhotoParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5300,7 +6001,7 @@ export interface SendPhotoParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
@@ -5346,7 +6047,7 @@ export interface SendLivePhotoParams {
 export interface SendAudioParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5380,14 +6081,14 @@ export interface SendAudioParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendDocumentParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5417,14 +6118,14 @@ export interface SendDocumentParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendVideoParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5468,14 +6169,14 @@ export interface SendVideoParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendAnimationParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5513,14 +6214,14 @@ export interface SendAnimationParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendVoiceParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5548,20 +6249,20 @@ export interface SendVoiceParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendVideoNoteParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More information on Sending Files: https://core.telegram.org/bots/api#sending-files. Sending video notes by a URL is currently unsupported */
+  /** Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More information on Sending Files: https://core.telegram.org/bots/api#sending-files. Sending video notes by a URL is currently unsupported. */
   video_note: InputFile | string;
   /** Duration of sent video in seconds */
   duration?: number;
@@ -5581,14 +6282,14 @@ export interface SendVideoNoteParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendPaidMediaParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. If the chat is a channel, all Telegram Star proceeds from this media will be credited to the chat's balance. Otherwise, they will be credited to the bot's balance. */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. If the chat is a channel, all Telegram Star proceeds from this media will be credited to the chat's balance. Otherwise, they will be credited to the bot's balance. */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5618,14 +6319,14 @@ export interface SendPaidMediaParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendMediaGroupParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5648,7 +6349,7 @@ export interface SendMediaGroupParams {
 export interface SendLocationParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5660,7 +6361,7 @@ export interface SendLocationParams {
   longitude: number;
   /** The radius of uncertainty for the location, measured in meters; 0-1500 */
   horizontal_accuracy?: number;
-  /** Period in seconds during which the location will be updated (see Live Locations, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely. */
+  /** Period in seconds during which the location will be updated (see Live Locations, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely */
   live_period?: number;
   /** For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified. */
   heading?: number;
@@ -5678,14 +6379,14 @@ export interface SendLocationParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendVenueParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5719,14 +6420,14 @@ export interface SendVenueParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendContactParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5752,22 +6453,22 @@ export interface SendContactParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendPollParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. Polls can't be sent to channel direct messages chats. */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. Polls can't be sent to channel direct messages chats. */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Poll question, 1-300 characters */
   question: string;
-  /** Mode for parsing entities in the question. See formatting options for more details. Currently, only custom emoji entities are allowed */
+  /** Mode for parsing entities in the question. See formatting options for more details. Currently, only custom emoji entities are allowed. */
   question_parse_mode?: string;
-  /** A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode */
+  /** A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode. */
   question_entities?: MessageEntity[];
   /** A JSON-serialized list of 1-12 answer options */
   options: InputPollOption[];
@@ -5787,7 +6488,7 @@ export interface SendPollParams {
   hide_results_until_closes?: boolean;
   /** Pass True, if voting is limited to users who have been members of the chat where the poll is being sent for more than 24 hours; for channel chats only */
   members_only?: boolean;
-  /** A JSON-serialized list of 0-12 two-letter ISO 3166-1 alpha-2 country codes indicating the countries from which users can vote in the poll; for channel chats only. If omitted or empty, then users from any country can participate in the poll. */
+  /** A JSON-serialized list of 0-12 two-letter ISO 3166-1 alpha-2 country codes indicating the countries from which users can vote in the poll; for channel chats only. Use "FT" as a country code to allow users with anonymous numbers to vote. If omitted or empty, then users from any country can participate in the poll. */
   country_codes?: string[];
   /** A JSON-serialized list of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode */
   correct_option_ids?: number[];
@@ -5795,7 +6496,7 @@ export interface SendPollParams {
   explanation?: string;
   /** Mode for parsing entities in the explanation. See formatting options for more details. */
   explanation_parse_mode?: string;
-  /** A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of explanation_parse_mode */
+  /** A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of explanation_parse_mode. */
   explanation_entities?: MessageEntity[];
   /** Media added to the quiz explanation */
   explanation_media?: InputPollMedia;
@@ -5823,14 +6524,14 @@ export interface SendPollParams {
   message_effect_id?: string;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface SendChecklistParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id: string;
-  /** Unique identifier for the target chat or username of the target bot in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot in the format @username */
   chat_id: number | string;
   /** A JSON-serialized object for the checklist to send */
   checklist: InputChecklist;
@@ -5849,13 +6550,13 @@ export interface SendChecklistParams {
 export interface SendDiceParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", "🎳", or "🎰". Dice can have values 1-6 for "🎲", "🎯" and "🎳", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲" */
+  /** Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", "🎳", or "🎰". Dice can have values 1-6 for "🎲", "🎯" and "🎳", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲". */
   emoji?: string;
   /** Sends the message silently. Users will receive a notification with no sound. */
   disable_notification?: boolean;
@@ -5869,7 +6570,7 @@ export interface SendDiceParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
@@ -5878,7 +6579,7 @@ export interface SendMessageDraftParams {
   chat_id: number;
   /** Unique identifier for the target message thread */
   message_thread_id?: number;
-  /** Unique identifier of the message draft; must be non-zero. Changes of drafts with the same identifier are animated. */
+  /** Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated. */
   draft_id: number;
   /** Text of the message to be sent, 0-4096 characters after entities parsing. Pass an empty text to show a "Thinking..." placeholder. */
   text?: string;
@@ -5891,7 +6592,7 @@ export interface SendMessageDraftParams {
 export interface SendChatActionParams {
   /** Unique identifier of the business connection on behalf of which the action will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. Channel chats and channel direct messages chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target bot or supergroup in the format @username. Channel chats and channel direct messages chats aren't supported. */
   chat_id: number | string;
   /** Unique identifier for the target message thread or topic of a forum; for supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5900,7 +6601,7 @@ export interface SendChatActionParams {
 }
 
 export interface SetMessageReactionParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Identifier of the target message. If the message belongs to a media group, the reaction is set to the first non-deleted message in the group instead. */
   message_id: number;
@@ -5943,7 +6644,7 @@ export interface GetFileParams {
 }
 
 export interface BanChatMemberParams {
-  /** Unique identifier for the target group or username of the target supergroup or channel in the format `@username` */
+  /** Unique identifier for the target group or username of the target supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -5954,7 +6655,7 @@ export interface BanChatMemberParams {
 }
 
 export interface UnbanChatMemberParams {
-  /** Unique identifier for the target group or username of the target supergroup or channel in the format `@username` */
+  /** Unique identifier for the target group or username of the target supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -5963,7 +6664,7 @@ export interface UnbanChatMemberParams {
 }
 
 export interface RestrictChatMemberParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -5971,12 +6672,12 @@ export interface RestrictChatMemberParams {
   permissions: ChatPermissions;
   /** Pass True if chat permissions are set independently. Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions; the can_send_polls permission will imply the can_send_messages permission. */
   use_independent_chat_permissions?: boolean;
-  /** Date when restrictions will be lifted for the user; Unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever */
+  /** Date when restrictions will be lifted for the user; Unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever. */
   until_date?: number;
 }
 
 export interface PromoteChatMemberParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -5988,7 +6689,7 @@ export interface PromoteChatMemberParams {
   can_delete_messages?: boolean;
   /** Pass True if the administrator can manage video chats */
   can_manage_video_chats?: boolean;
-  /** Pass True if the administrator can restrict, ban or unban chat members, or access supergroup statistics. For backward compatibility, defaults to True for promotions of channel administrators */
+  /** Pass True if the administrator can restrict, ban or unban chat members, or access supergroup statistics. For backward compatibility, defaults to True for promotions of channel administrators. */
   can_restrict_members?: boolean;
   /** Pass True if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him) */
   can_promote_members?: boolean;
@@ -6017,7 +6718,7 @@ export interface PromoteChatMemberParams {
 }
 
 export interface SetChatAdministratorCustomTitleParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6026,7 +6727,7 @@ export interface SetChatAdministratorCustomTitleParams {
 }
 
 export interface SetChatMemberTagParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6035,21 +6736,21 @@ export interface SetChatMemberTagParams {
 }
 
 export interface BanChatSenderChatParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target sender chat */
   sender_chat_id: number;
 }
 
 export interface UnbanChatSenderChatParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target sender chat */
   sender_chat_id: number;
 }
 
 export interface SetChatPermissionsParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** A JSON-serialized object for new default chat permissions */
   permissions: ChatPermissions;
@@ -6058,12 +6759,12 @@ export interface SetChatPermissionsParams {
 }
 
 export interface ExportChatInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
 }
 
 export interface CreateChatInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Invite link name; 0-32 characters */
   name?: string;
@@ -6071,12 +6772,12 @@ export interface CreateChatInviteLinkParams {
   expire_date?: number;
   /** The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999 */
   member_limit?: number;
-  /** True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified */
+  /** True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified. */
   creates_join_request?: boolean;
 }
 
 export interface EditChatInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** The invite link to edit */
   invite_link: string;
@@ -6086,12 +6787,12 @@ export interface EditChatInviteLinkParams {
   expire_date?: number;
   /** The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999 */
   member_limit?: number;
-  /** True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified */
+  /** True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified. */
   creates_join_request?: boolean;
 }
 
 export interface CreateChatSubscriptionInviteLinkParams {
-  /** Unique identifier for the target channel chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target channel chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Invite link name; 0-32 characters */
   name?: string;
@@ -6102,7 +6803,7 @@ export interface CreateChatSubscriptionInviteLinkParams {
 }
 
 export interface EditChatSubscriptionInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** The invite link to edit */
   invite_link: string;
@@ -6111,47 +6812,61 @@ export interface EditChatSubscriptionInviteLinkParams {
 }
 
 export interface RevokeChatInviteLinkParams {
-  /** Unique identifier of the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier of the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** The invite link to revoke */
   invite_link: string;
 }
 
 export interface ApproveChatJoinRequestParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
 }
 
 export interface DeclineChatJoinRequestParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
 }
 
+export interface AnswerChatJoinRequestQueryParams {
+  /** Unique identifier of the join request query */
+  chat_join_request_query_id: string;
+  /** Result of the query. Must be either "approve" to allow the user to join the chat, "decline" to disallow the user to join the chat, or "queue" to leave the decision to other administrators. */
+  result: string;
+}
+
+export interface SendChatJoinRequestWebAppParams {
+  /** Unique identifier of the join request query */
+  chat_join_request_query_id: string;
+  /** The URL of the Mini App to be opened */
+  web_app_url: string;
+}
+
 export interface SetChatPhotoParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** New chat photo, uploaded using multipart/form-data */
   photo: InputFile;
 }
 
 export interface DeleteChatPhotoParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
 }
 
 export interface SetChatTitleParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** New chat title, 1-128 characters */
   title: string;
 }
 
 export interface SetChatDescriptionParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** New chat description, 0-255 characters */
   description?: string;
@@ -6160,7 +6875,7 @@ export interface SetChatDescriptionParams {
 export interface PinChatMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be pinned */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Identifier of a message to pin */
   message_id: number;
@@ -6171,41 +6886,41 @@ export interface PinChatMessageParams {
 export interface UnpinChatMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be unpinned */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Identifier of the message to unpin. Required if business_connection_id is specified. If not specified, the most recent pinned message (by sending date) will be unpinned. */
   message_id?: number;
 }
 
 export interface UnpinAllChatMessagesParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
 }
 
 export interface LeaveChatParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username`. Channel direct messages chats aren't supported; leave the corresponding channel instead. */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username. Channel direct messages chats aren't supported; leave the corresponding channel instead. */
   chat_id: number | string;
 }
 
 export interface GetChatParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
   chat_id: number | string;
 }
 
 export interface GetChatAdministratorsParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
   chat_id: number | string;
   /** Pass True to additionally receive all bots that are administrators of the chat. By default, bots other than the current bot are omitted. */
   return_bots?: boolean;
 }
 
 export interface GetChatMemberCountParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
   chat_id: number | string;
 }
 
 export interface GetChatMemberParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6219,107 +6934,107 @@ export interface GetUserPersonalChatMessagesParams {
 }
 
 export interface SetChatStickerSetParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Name of the sticker set to be set as the group sticker set */
   sticker_set_name: string;
 }
 
 export interface DeleteChatStickerSetParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
 }
 
 export interface CreateForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Topic name, 1-128 characters */
   name: string;
-  /** Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F) */
+  /** Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F). */
   icon_color?: number;
   /** Unique identifier of the custom emoji shown as the topic icon. Use getForumTopicIconStickers to get all allowed custom emoji identifiers. */
   icon_custom_emoji_id?: string;
 }
 
 export interface EditForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
-  /** New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept */
+  /** New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept. */
   name?: string;
-  /** New unique identifier of the custom emoji shown as the topic icon. Use getForumTopicIconStickers to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept */
+  /** New unique identifier of the custom emoji shown as the topic icon. Use getForumTopicIconStickers to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept. */
   icon_custom_emoji_id?: string;
 }
 
 export interface CloseForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface ReopenForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface DeleteForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface UnpinAllForumTopicMessagesParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface EditGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** New topic name, 1-128 characters */
   name: string;
 }
 
 export interface CloseGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
 }
 
 export interface ReopenGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
 }
 
 export interface HideGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
 }
 
 export interface UnhideGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
 }
 
 export interface UnpinAllGeneralForumTopicMessagesParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
 }
 
 export interface AnswerCallbackQueryParams {
   /** Unique identifier for the query to be answered */
   callback_query_id: string;
-  /** Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters */
+  /** Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters. */
   text?: string;
   /** If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false. */
   show_alert?: boolean;
-  /** URL that will be opened by the user's client. If you have created a Game and accepted the conditions via `@BotFather`, specify the URL that opens your game - note that this will only work if the query comes from a callback_game button. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter. */
+  /** URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @BotFather, specify the URL that opens your game - note that this will only work if the query comes from a callback_game button. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter. */
   url?: string;
   /** The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0. */
   cache_time?: number;
@@ -6333,7 +7048,7 @@ export interface AnswerGuestQueryParams {
 }
 
 export interface GetUserChatBoostsParams {
-  /** Unique identifier for the chat or username of the channel in the format `@username` */
+  /** Unique identifier for the chat or username of the channel in the format @username */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6373,14 +7088,14 @@ export interface SetMyCommandsParams {
   commands: BotCommand[];
   /** A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault. */
   scope?: BotCommandScope;
-  /** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands */
+  /** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands. */
   language_code?: string;
 }
 
 export interface DeleteMyCommandsParams {
   /** A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault. */
   scope?: BotCommandScope;
-  /** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands */
+  /** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands. */
   language_code?: string;
 }
 
@@ -6433,14 +7148,14 @@ export interface SetMyProfilePhotoParams {
 }
 
 export interface SetChatMenuButtonParams {
-  /** Unique identifier for the target private chat. If not specified, default bot's menu button will be changed */
+  /** Unique identifier for the target private chat. If not specified, the bot's default menu button will be changed. */
   chat_id?: number;
-  /** A JSON-serialized object for the bot's new menu button. Defaults to MenuButtonDefault */
+  /** A JSON-serialized object for the bot's new menu button. Defaults to MenuButtonDefault. */
   menu_button?: MenuButton;
 }
 
 export interface GetChatMenuButtonParams {
-  /** Unique identifier for the target private chat. If not specified, default bot's menu button will be returned */
+  /** Unique identifier for the target private chat. If not specified, the bot's default menu button will be returned. */
   chat_id?: number;
 }
 
@@ -6459,7 +7174,7 @@ export interface GetMyDefaultAdministratorRightsParams {
 export interface SendGiftParams {
   /** Required if chat_id is not specified. Unique identifier of the target user who will receive the gift. */
   user_id?: number;
-  /** Required if user_id is not specified. Unique identifier for the chat or username of the channel (in the format `@username`) that will receive the gift. */
+  /** Required if user_id is not specified. Unique identifier for the chat or username of the channel (in the format @username) that will receive the gift. */
   chat_id?: number | string;
   /** Identifier of the gift; limited gifts can't be sent to channel chats */
   gift_id: string;
@@ -6496,7 +7211,7 @@ export interface VerifyUserParams {
 }
 
 export interface VerifyChatParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. Channel direct messages chats can't be verified. */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. Channel direct messages chats can't be verified. */
   chat_id: number | string;
   /** Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description. */
   custom_description?: string;
@@ -6508,7 +7223,7 @@ export interface RemoveUserVerificationParams {
 }
 
 export interface RemoveChatVerificationParams {
-  /** Unique identifier for the target chat or username of the target bot or channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot or channel in the format @username */
   chat_id: number | string;
 }
 
@@ -6524,7 +7239,7 @@ export interface ReadBusinessMessageParams {
 export interface DeleteBusinessMessagesParams {
   /** Unique identifier of the business connection on behalf of which to delete the messages */
   business_connection_id: string;
-  /** A JSON-serialized list of 1-100 identifiers of messages to delete. All messages must be from the same chat. See deleteMessage for limitations on which messages can be deleted */
+  /** A JSON-serialized list of 1-100 identifiers of messages to delete. All messages must be from the same chat. See deleteMessage for limitations on which messages can be deleted. */
   message_ids: number[];
 }
 
@@ -6609,7 +7324,7 @@ export interface GetBusinessAccountGiftsParams {
   sort_by_price?: boolean;
   /** Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results */
   offset?: string;
-  /** The maximum number of gifts to be returned; 1-100. Defaults to 100 */
+  /** The maximum number of gifts to be returned; 1-100. Defaults to 100. */
   limit?: number;
 }
 
@@ -6630,12 +7345,12 @@ export interface GetUserGiftsParams {
   sort_by_price?: boolean;
   /** Offset of the first entry to return as received from the previous request; use an empty string to get the first chunk of results */
   offset?: string;
-  /** The maximum number of gifts to be returned; 1-100. Defaults to 100 */
+  /** The maximum number of gifts to be returned; 1-100. Defaults to 100. */
   limit?: number;
 }
 
 export interface GetChatGiftsParams {
-  /** Unique identifier for the target chat or username of the target channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target channel in the format @username */
   chat_id: number | string;
   /** Pass True to exclude gifts that aren't saved to the chat's profile page. Always True, unless the bot has the can_post_messages administrator right in the channel. */
   exclude_unsaved?: boolean;
@@ -6655,7 +7370,7 @@ export interface GetChatGiftsParams {
   sort_by_price?: boolean;
   /** Offset of the first entry to return as received from the previous request; use an empty string to get the first chunk of results */
   offset?: string;
-  /** The maximum number of gifts to be returned; 1-100. Defaults to 100 */
+  /** The maximum number of gifts to be returned; 1-100. Defaults to 100. */
   limit?: number;
 }
 
@@ -6773,39 +7488,41 @@ export interface SavePreparedInlineMessageParams {
 export interface SavePreparedKeyboardButtonParams {
   /** Unique identifier of the target user that can use the button */
   user_id: number;
-  /** A JSON-serialized object describing the button to be saved. The button must be of the type request_users, request_chat, or request_managed_bot */
+  /** A JSON-serialized object describing the button to be saved. The button must be of the type request_users, request_chat, or request_managed_bot. */
   button: KeyboardButton;
 }
 
 export interface EditMessageTextParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
   chat_id?: number | string;
-  /** Required if inline_message_id is not specified. Identifier of the message to edit */
+  /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
-  /** New text of the message, 1-4096 characters after entities parsing */
-  text: string;
+  /** New text of the message, 1-4096 characters after entity parsing; required if rich_message isn't specified */
+  text?: string;
   /** Mode for parsing entities in the message text. See formatting options for more details. */
   parse_mode?: string;
   /** A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode */
   entities?: MessageEntity[];
   /** Link preview generation options for the message */
   link_preview_options?: LinkPreviewOptions;
-  /** A JSON-serialized object for an inline keyboard. */
+  /** New rich content of the message; required if text isn't specified */
+  rich_message?: InputRichMessage;
+  /** A JSON-serialized object for an inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
 export interface EditMessageCaptionParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
   chat_id?: number | string;
-  /** Required if inline_message_id is not specified. Identifier of the message to edit */
+  /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
   /** New caption of the message, 0-1024 characters after entities parsing */
   caption?: string;
@@ -6815,39 +7532,39 @@ export interface EditMessageCaptionParams {
   caption_entities?: MessageEntity[];
   /** Pass True, if the caption must be shown above the message media. Supported only for animation, photo and video messages. */
   show_caption_above_media?: boolean;
-  /** A JSON-serialized object for an inline keyboard. */
+  /** A JSON-serialized object for an inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
 export interface EditMessageMediaParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
   chat_id?: number | string;
-  /** Required if inline_message_id is not specified. Identifier of the message to edit */
+  /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
   /** A JSON-serialized object for a new media content of the message */
   media: InputMedia;
-  /** A JSON-serialized object for a new inline keyboard. */
+  /** A JSON-serialized object for a new inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
 export interface EditMessageLiveLocationParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
   chat_id?: number | string;
-  /** Required if inline_message_id is not specified. Identifier of the message to edit */
+  /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
   /** Latitude of new location */
   latitude: number;
   /** Longitude of new location */
   longitude: number;
-  /** New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current live_period by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then live_period remains unchanged */
+  /** New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current live_period by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then live_period remains unchanged. */
   live_period?: number;
   /** The radius of uncertainty for the location, measured in meters; 0-1500 */
   horizontal_accuracy?: number;
@@ -6855,27 +7572,27 @@ export interface EditMessageLiveLocationParams {
   heading?: number;
   /** The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified. */
   proximity_alert_radius?: number;
-  /** A JSON-serialized object for a new inline keyboard. */
+  /** A JSON-serialized object for a new inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
 export interface StopMessageLiveLocationParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
   chat_id?: number | string;
-  /** Required if inline_message_id is not specified. Identifier of the message with live location to stop */
+  /** Required if inline_message_id is not specified. Identifier of the message with live location to stop. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
-  /** A JSON-serialized object for a new inline keyboard. */
+  /** A JSON-serialized object for a new inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
 export interface EditMessageChecklistParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id: string;
-  /** Unique identifier for the target chat or username of the target bot in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message */
   message_id: number;
@@ -6888,24 +7605,24 @@ export interface EditMessageChecklistParams {
 export interface EditMessageReplyMarkupParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
   chat_id?: number | string;
-  /** Required if inline_message_id is not specified. Identifier of the message to edit */
+  /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
-  /** A JSON-serialized object for an inline keyboard. */
+  /** A JSON-serialized object for an inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
 export interface StopPollParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Identifier of the original message with the poll */
   message_id: number;
-  /** A JSON-serialized object for a new message inline keyboard. */
+  /** A JSON-serialized object for a new message inline keyboard */
   reply_markup?: InlineKeyboardMarkup;
 }
 
@@ -6914,7 +7631,7 @@ export interface ApproveSuggestedPostParams {
   chat_id: number;
   /** Identifier of a suggested post message to approve */
   message_id: number;
-  /** Point in time (Unix timestamp) when the post is expected to be published; omit if the date has already been specified when the suggested post was created. If specified, then the date must be not more than 2678400 seconds (30 days) in the future */
+  /** Point in time (Unix timestamp) when the post is expected to be published; omit if the date has already been specified when the suggested post was created. If specified, then the date must be not more than 2678400 seconds (30 days) in the future. */
   send_date?: number;
 }
 
@@ -6928,21 +7645,21 @@ export interface DeclineSuggestedPostParams {
 }
 
 export interface DeleteMessageParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Identifier of the message to delete */
   message_id: number;
 }
 
 export interface DeleteMessagesParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
-  /** A JSON-serialized list of 1-100 identifiers of messages to delete. See deleteMessage for limitations on which messages can be deleted */
+  /** A JSON-serialized list of 1-100 identifiers of messages to delete. See deleteMessage for limitations on which messages can be deleted. */
   message_ids: number[];
 }
 
 export interface DeleteMessageReactionParams {
-  /** Unique identifier for the target chat or username of the target supergroup (in the format `@username`) */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Identifier of the target message */
   message_id: number;
@@ -6953,7 +7670,7 @@ export interface DeleteMessageReactionParams {
 }
 
 export interface DeleteAllMessageReactionsParams {
-  /** Unique identifier for the target chat or username of the target supergroup (in the format `@username`) */
+  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
   chat_id: number | string;
   /** Identifier of the user whose reactions will be removed, if the reactions were added by a user */
   user_id?: number;
@@ -6964,7 +7681,7 @@ export interface DeleteAllMessageReactionsParams {
 export interface SendStickerParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6986,7 +7703,7 @@ export interface SendStickerParams {
   suggested_post_parameters?: SuggestedPostParameters;
   /** Description of the message to reply to */
   reply_parameters?: ReplyParameters;
-  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user */
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
   reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
@@ -7098,13 +7815,51 @@ export interface SetStickerSetThumbnailParams {
 export interface SetCustomEmojiStickerSetThumbnailParams {
   /** Sticker set name */
   name: string;
-  /** Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail. */
+  /** Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail */
   custom_emoji_id?: string;
 }
 
 export interface DeleteStickerSetParams {
   /** Sticker set name */
   name: string;
+}
+
+export interface SendRichMessageParams {
+  /** Unique identifier of the business connection on behalf of which the message will be sent */
+  business_connection_id?: string;
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  chat_id: number | string;
+  /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
+  message_thread_id?: number;
+  /** Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat */
+  direct_messages_topic_id?: number;
+  /** The message to be sent */
+  rich_message: InputRichMessage;
+  /** Sends the message silently. Users will receive a notification with no sound. */
+  disable_notification?: boolean;
+  /** Protects the contents of the sent message from forwarding and saving */
+  protect_content?: boolean;
+  /** Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance. */
+  allow_paid_broadcast?: boolean;
+  /** Unique identifier of the message effect to be added to the message; for private chats only */
+  message_effect_id?: string;
+  /** A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined. */
+  suggested_post_parameters?: SuggestedPostParameters;
+  /** Description of the message to reply to */
+  reply_parameters?: ReplyParameters;
+  /** Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove a reply keyboard or to force a reply from the user. */
+  reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+
+export interface SendRichMessageDraftParams {
+  /** Unique identifier for the target private chat */
+  chat_id: number;
+  /** Unique identifier for the target message thread */
+  message_thread_id?: number;
+  /** Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated. */
+  draft_id: number;
+  /** The partial message to be streamed */
+  rich_message: InputRichMessage;
 }
 
 export interface AnswerInlineQueryParams {
@@ -7123,7 +7878,7 @@ export interface AnswerInlineQueryParams {
 }
 
 export interface SendInvoiceParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `\@username` */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -7135,7 +7890,7 @@ export interface SendInvoiceParams {
   description: string;
   /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use it for your internal processes. */
   payload: string;
-  /** Payment provider token, obtained via `@BotFather`. Pass an empty string for payments in Telegram Stars. */
+  /** Payment provider token, obtained via @BotFather. Pass an empty string for payments in Telegram Stars. */
   provider_token?: string;
   /** Three-letter ISO 4217 currency code, see more on currencies. Pass "XTR" for payments in Telegram Stars. */
   currency: string;
@@ -7145,7 +7900,7 @@ export interface SendInvoiceParams {
   max_tip_amount?: number;
   /** A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount. */
   suggested_tip_amounts?: number[];
-  /** Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter */
+  /** Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter. */
   start_parameter?: string;
   /** JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider. */
   provider_data?: string;
@@ -7196,7 +7951,7 @@ export interface CreateInvoiceLinkParams {
   description: string;
   /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use it for your internal processes. */
   payload: string;
-  /** Payment provider token, obtained via `@BotFather`. Pass an empty string for payments in Telegram Stars. */
+  /** Payment provider token, obtained via @BotFather. Pass an empty string for payments in Telegram Stars. */
   provider_token?: string;
   /** Three-letter ISO 4217 currency code, see more on currencies. Pass "XTR" for payments in Telegram Stars. */
   currency: string;
@@ -7287,11 +8042,11 @@ export interface SetPassportDataErrorsParams {
 export interface SendGameParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot in the format `@username`. Games can't be sent to channel direct messages chats and channel chats. */
+  /** Unique identifier for the target chat or username of the target bot in the format @username. Games can't be sent to channel direct messages chats and channel chats. */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
-  /** Short name of the game, serves as the unique identifier for the game. Set up your games via `@BotFather`. */
+  /** Short name of the game, serves as the unique identifier for the game. Set up your games via @BotFather. */
   game_short_name: string;
   /** Sends the message silently. Users will receive a notification with no sound. */
   disable_notification?: boolean;
@@ -7312,26 +8067,26 @@ export interface SetGameScoreParams {
   user_id: number;
   /** New score, must be non-negative */
   score: number;
-  /** Pass True if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters */
+  /** Pass True if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters. */
   force?: boolean;
   /** Pass True if the game message should not be automatically edited to include the current scoreboard */
   disable_edit_message?: boolean;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat. */
   chat_id?: number;
-  /** Required if inline_message_id is not specified. Identifier of the sent message */
+  /** Required if inline_message_id is not specified. Identifier of the sent message. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
 }
 
 export interface GetGameHighScoresParams {
   /** Target user id */
   user_id: number;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat. */
   chat_id?: number;
-  /** Required if inline_message_id is not specified. Identifier of the sent message */
+  /** Required if inline_message_id is not specified. Identifier of the sent message. */
   message_id?: number;
-  /** Required if chat_id and message_id are not specified. Identifier of the inline message */
+  /** Required if chat_id and message_id are not specified. Identifier of the inline message. */
   inline_message_id?: string;
 }
 
@@ -7599,6 +8354,16 @@ export interface TelegramBotApi {
    * Use this method to decline a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
    */
   declineChatJoinRequest(params: DeclineChatJoinRequestParams): Promise<boolean>;
+
+  /**
+   * Use this method to process a received chat join request query. Returns True on success.
+   */
+  answerChatJoinRequestQuery(params: AnswerChatJoinRequestQueryParams): Promise<boolean>;
+
+  /**
+   * Use this method to process a received chat join request query by showing a Mini App to the user before deciding the outcome. Returns True on success.
+   */
+  sendChatJoinRequestWebApp(params: SendChatJoinRequestWebAppParams): Promise<boolean>;
 
   /**
    * Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
@@ -8006,7 +8771,7 @@ export interface TelegramBotApi {
   savePreparedKeyboardButton(params: SavePreparedKeyboardButtonParams): Promise<PreparedKeyboardButton>;
 
   /**
-   * Use this method to edit text and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
+   * Use this method to edit text, rich and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
    */
   editMessageText(params: EditMessageTextParams): Promise<Message | boolean>;
 
@@ -8016,7 +8781,7 @@ export interface TelegramBotApi {
   editMessageCaption(params: EditMessageCaptionParams): Promise<Message | boolean>;
 
   /**
-   * Use this method to edit animation, audio, document, live photo, photo, or video messages, or to add media to text messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo, a live photo, or a video otherwise. When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
+   * Use this method to edit animation, audio, document, live photo, photo, or video messages, or to replace a text or a rich message with a media. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo, a live photo, or a video otherwise. When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
    */
   editMessageMedia(params: EditMessageMediaParams): Promise<Message | boolean>;
 
@@ -8154,6 +8919,16 @@ export interface TelegramBotApi {
    * Use this method to delete a sticker set that was created by the bot. Returns True on success.
    */
   deleteStickerSet(params: DeleteStickerSetParams): Promise<boolean>;
+
+  /**
+   * Use this method to send rich messages. If the message contains a block with a media element, then the bot must have the right to send the media to the chat. On success, the sent Message is returned.
+   */
+  sendRichMessage(params: SendRichMessageParams): Promise<Message>;
+
+  /**
+   * Use this method to stream a partial rich message to a user while the message is being generated. Note that the streamed draft is ephemeral and acts as a temporary 30-second preview - once the output is finalized, you must call sendRichMessage with the complete message to persist it in the user's chat. Returns True on success.
+   */
+  sendRichMessageDraft(params: SendRichMessageDraftParams): Promise<boolean>;
 
   /**
    * Use this method to send answers to an inline query. On success, True is returned.,No more than 50 results per query are allowed.

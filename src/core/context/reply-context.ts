@@ -1,4 +1,4 @@
-import { Message, SendMessageParams, SendPhotoParams, InputFile, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton, SendVideoParams, SendDocumentParams, SendLivePhotoParams, SendGiftParams, AnswerCallbackQueryParams, ReactionType, EditMessageTextParams, MessageId, EditMessageCaptionParams, SendInvoiceParams, AnswerShippingQueryParams, SendPaidMediaParams, InputPaidMediaPhoto, InputPaidMediaVideo, InputPaidMediaLivePhoto, SendMediaGroupParams, InputMediaDocument, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaLivePhoto, InputPollOption, SendPollParams, InlineQueryResult, AnswerGuestQueryParams, SentGuestMessage, SendGameParams, SetGameScoreParams, GameHighScore, DeleteMessageReactionParams, DeleteAllMessageReactionsParams, SendMessageDraftParams } from "../../types/telegram.js";
+import { Message, SendMessageParams, SendPhotoParams, InputFile, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton, SendVideoParams, SendDocumentParams, SendLivePhotoParams, SendGiftParams, AnswerCallbackQueryParams, ReactionType, EditMessageTextParams, MessageId, EditMessageCaptionParams, SendInvoiceParams, AnswerShippingQueryParams, SendPaidMediaParams, InputPaidMediaPhoto, InputPaidMediaVideo, InputPaidMediaLivePhoto, SendMediaGroupParams, InputMediaDocument, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaLivePhoto, InputPollOption, SendPollParams, InlineQueryResult, AnswerGuestQueryParams, SentGuestMessage, SendGameParams, SetGameScoreParams, GameHighScore, DeleteMessageReactionParams, DeleteAllMessageReactionsParams, SendMessageDraftParams, SendChatActionParams, InputRichMessage, SendRichMessageParams, SendRichMessageDraftParams } from "../../types/telegram.js";
 import { InlineKeyboard, ReplyKeyboard } from "../keyboard.js";
 import { BaseContext } from "./base-context.js";
 
@@ -146,6 +146,26 @@ export abstract class ReplyContext extends BaseContext {
   }
 
   /**
+   * Reply to the current message with a rich message (HTML or Markdown).
+   * @param richMessage Rich message object. Exactly one of the fields `html` or `markdown` must be provided.
+   * @param options Additional parameters
+   * @returns `Promise<Message>`
+   */
+  public async replyWithRichMessage(
+    richMessage: ({ html: string; markdown?: never } | { markdown: string; html?: never })
+      & Pick<InputRichMessage, 'is_rtl' | 'skip_entity_detection'>,
+    options?: Omit<SendRichMessageParams, 'chat_id' | 'rich_message'>
+  ): Promise<Message> {
+    const { chatId } = this.getRequiredIds("replyWithRichMessage", false);
+
+    return this.api.sendRichMessage({
+      chat_id: chatId,
+      rich_message: richMessage,
+      ...options,
+    });
+  }
+
+  /**
     * Send a gift (Star Gift) to the current user
     * @param giftId Gift ID
     * @param options Parameters object
@@ -210,17 +230,25 @@ export abstract class ReplyContext extends BaseContext {
 
   /**
   * Send chat action status to the current chat (e.g., "typing", "upload_photo")
+  * Automatically detects `message_thread_id` for forum topics.
   * @param action Action status (e.g., "typing", "upload_photo")
+  * @param options Additional parameters
   * @returns `Promise<boolean>`
   */
   public async replyWithChatAction(
-    action: "typing" | "upload_photo" | "record_video" | "upload_video" | "record_voice" | "upload_voice" | "upload_document" | "choose_sticker" | "find_location" | "record_video_note" | "upload_video_note"
+    action: "typing" | "upload_photo" | "record_video" | "upload_video" | "record_voice" | "upload_voice" | "upload_document" | "choose_sticker" | "find_location" | "record_video_note" | "upload_video_note",
+    options?: Omit<SendChatActionParams, 'chat_id' | 'action'>
   ): Promise<boolean> {
     const { chatId } = this.getRequiredIds("replyWithChatAction", false);
+
+    // Автоматично дістаємо message_thread_id з повідомлення або з повідомлення callback_query
+    const threadId = (this.message as Message | undefined)?.message_thread_id ?? (this.callbackQuery?.message as Message | undefined)?.message_thread_id;
 
     return this.api.sendChatAction({
       chat_id: chatId,
       action: action,
+      message_thread_id: threadId,
+      ...options
     });
   }
 
@@ -238,21 +266,27 @@ export abstract class ReplyContext extends BaseContext {
   }
 
   /**
- * Edit the text of the current message
- * @param text Message text
- * @param options Additional parameters
- * @returns `Promise<Message | boolean>`
- */
+   * Edit the text or rich content of the current message.
+   * Pass a `string` to edit as plain text, or a rich message object with `html`/`markdown` for rich content.
+   * @param content New message text (`string`) or rich message object (exactly one of `html` or `markdown`)
+   * @param options Additional parameters
+   * @returns `Promise<Message | boolean>`
+   */
   public async editMessageText(
-    text: string,
-    options?: Omit<EditMessageTextParams, "chat_id" | "text" | "message_id">
+    content: string | (({ html: string; markdown?: never } | { markdown: string; html?: never })
+      & Pick<InputRichMessage, 'is_rtl' | 'skip_entity_detection'>),
+    options?: Omit<EditMessageTextParams, "chat_id" | "text" | "message_id" | "rich_message">
   ): Promise<Message | boolean> {
     const { chatId, messageId } = this.getRequiredIds("editMessage");
+
+    const contentParams = typeof content === 'string'
+      ? { text: content }
+      : { rich_message: content };
 
     return this.api.editMessageText({
       chat_id: chatId,
       message_id: messageId,
-      text,
+      ...contentParams,
       ...options,
     });
   }
@@ -311,19 +345,26 @@ export abstract class ReplyContext extends BaseContext {
   }
 
   /**
-    * Change only the inline keyboard of the current message
-    * @param replyMarkup - keyboard
+    * Change only the inline keyboard of the current message or a specific message
+    * @param replyMarkup - keyboard (pass `undefined` to remove)
+    * @param messageId - optional message ID (defaults to the current message)
     * @returns `Promise<Message | boolean>`
     */
   public async editReplyMarkup(
-    replyMarkup?: InlineKeyboardMarkup
+    replyMarkup?: InlineKeyboardMarkup,
+    messageId?: number
   ): Promise<Message | boolean> {
-    const { chatId, messageId } = this.getRequiredIds("editReplyMarkup", true);
+    const targetMessageId = messageId ?? (this.message as Message | undefined)?.message_id;
+    const targetChatId = this.chatId;
+
+    if (!targetChatId || !targetMessageId) {
+      throw new Error("Cannot edit reply markup: chat_id or message_id is missing");
+    }
 
     return this.api.editMessageReplyMarkup({
-      chat_id: chatId,
-      message_id: messageId,
-      reply_markup: replyMarkup, // If undefined is passed, the keyboard will disappear
+      chat_id: targetChatId,
+      message_id: targetMessageId,
+      reply_markup: replyMarkup,
     });
   }
 
@@ -610,6 +651,30 @@ export abstract class ReplyContext extends BaseContext {
     return this.api.sendMessageDraft({
       chat_id: chatId,
       draft_id: draftId,
+      ...options,
+    });
+  }
+
+  /**
+   * Stream a partial rich message to the user while the message is being generated.
+   * The streamed draft is ephemeral (30-second preview). Once finalized, call `replyWithRichMessage` to persist it.
+   * @param draftId Unique identifier of the message draft; must be non-zero. Same IDs animate changes.
+   * @param richMessage The partial rich message to be streamed. Exactly one of `html` or `markdown` must be provided.
+   * @param options Additional parameters
+   * @returns `Promise<boolean>`
+   */
+  public async replyWithRichDraft(
+    draftId: number,
+    richMessage: ({ html: string; markdown?: never } | { markdown: string; html?: never })
+      & Pick<InputRichMessage, 'is_rtl' | 'skip_entity_detection'>,
+    options?: Omit<SendRichMessageDraftParams, 'chat_id' | 'draft_id' | 'rich_message'>
+  ): Promise<boolean> {
+    const { chatId } = this.getRequiredIds("replyWithRichDraft", false);
+
+    return this.api.sendRichMessageDraft({
+      chat_id: chatId,
+      draft_id: draftId,
+      rich_message: richMessage,
       ...options,
     });
   }

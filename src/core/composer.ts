@@ -37,7 +37,7 @@ export type Middleware<C extends Context = Context> = (ctx: C, next: NextFunctio
  * depending on the passed filter.
  */
 export type NarrowedMessage<F extends UpdateFilter> =
-  F extends 'text' ? { text: string } :
+  F extends 'text' ? { text?: string; caption?: string } :
   F extends 'photo' ? { photo: PhotoSize[] } :
   F extends 'document' ? { document: Document } :
   F extends 'video' ? { video: Video } :
@@ -51,6 +51,9 @@ export type NarrowedMessage<F extends UpdateFilter> =
  * It extends the base context C, making certain fields MANDATORY.
  */
 export type NarrowedContext<C extends Context, F extends UpdateFilter> = C & {
+  // If the filter is 'text', then ctx.text is 100% string
+  text: F extends 'text' ? string : C['text'];
+
   // If the filter is 'callback_query', then ctx.callbackQuery 100% exists
   callbackQuery: F extends 'callback_query'
   ? NonNullable<C['callbackQuery']>

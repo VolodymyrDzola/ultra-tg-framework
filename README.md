@@ -1,6 +1,6 @@
 # 🚀 Ultra Telegram Framework (UTF)
 
-[![Bot API 10.0](https://img.shields.io/badge/Bot%20API-10.0-blue.svg?logo=telegram)](https://core.telegram.org/bots/api)
+[![Bot API 10.1](https://img.shields.io/badge/Bot%20API-10.1-blue.svg?logo=telegram)](https://core.telegram.org/bots/api)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-powered-orange.svg?logo=google-apps-script)](https://developers.google.com/apps-script/)
 [![Documentation](https://img.shields.io/badge/docs-TypeDoc-blue.svg?logo=readthedocs)](https://volodymyrdzola.github.io/ultra-telegram-framework/)
@@ -18,7 +18,8 @@ Designed with flexibility in mind, UTF features a unique **adapter-based archite
 - 🌍 **Write Once, Run Anywhere**: Deploy to Node.js, Cloudflare Workers, Vercel Edge, Bun, or Google Apps Script just by swapping the API client.
 - 🎭 **Batteries Included**: Sessions, Wizard Scenes, and Declarative Inline Menus are built directly into the core. No external plugins needed.
 - 🤖 **AI-Ready**: Built-in streaming support (`ctx.replyWithDraft()`) with auto-debouncing for LLM integrations.
-- 🛡️ **100% Type-Safe**: Exhaustive TypeScript coverage for the entire Telegram Bot API 10.0. Rich IDE autocompletion out of the box.
+- 🛡️ **100% Type-Safe**: Exhaustive TypeScript coverage for the entire Telegram Bot API 10.1. Rich IDE autocompletion out of the box.
+- 🧩 **Modular Sub-contexts**: Organized namespaces (`ctx.channel`, `ctx.group`, `ctx.game`) provide context-aware, lazy-loaded API shortcuts for channels, groups, and games.
 - ☁️ **Zero-Config GAS**: Automatically bundle and deploy to Google Apps Script with our built-in `utf-build` CLI tool. No manual webhook boilerplate needed.
 
 ---
@@ -56,6 +57,27 @@ bot.on('text', async (ctx) => {
 
 // 3. StartPolling
 bot.startPolling().then(() => console.log('🚀 Bot is running...'));
+```
+
+---
+
+## 🧩 Modular Sub-contexts
+
+To keep your code clean and autocompletion sharp, UTF groups channel, group, and game operations into dedicated sub-contexts. They are lazy-loaded and automatically resolve the current `chatId`, `messageId`, and `threadId` from the update context:
+
+```typescript
+bot.on('message', async (ctx) => {
+  // 1. Channel Operations (automatically uses the active channel chat_id)
+  await ctx.channel.postMessage('Hello channel subscribers!');
+  
+  // 2. Group Operations (automatically resolves group chat_id)
+  await ctx.group.ban(12345678); // Ban a user
+  await ctx.group.pin(); // Pins the current message
+
+  // 3. Game Operations (resolves chat_id, message_id, or inline_message_id)
+  await ctx.game.setScore(12345678, 100);
+});
+```
 ```
 
 ### Example 2: Google Apps Script
