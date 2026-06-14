@@ -530,7 +530,7 @@ export type MaybeInaccessibleMessage = Message | InaccessibleMessage;
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
  */
 export interface MessageEntity {
-  /** Type of the entity. Currently, can be "mention" (@username), "hashtag" (#hashtag or #hashtag@chatusername), "cashtag" ($USD or $USD@chatusername), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "spoiler" (spoiler message), "blockquote" (block quotation), "expandable_blockquote" (collapsed-by-default block quotation), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs), "text_mention" (for users without usernames), "custom_emoji" (for inline custom emoji stickers), or "date_time" (for formatted date and time). */
+  /** Type of the entity. Currently, can be "mention" (`@username`), "hashtag" (#hashtag or #hashtag`@chatusername`), "cashtag" ($USD or $USD`@chatusername`), "bot_command" (/start`@jobs_bot`), "url" (https://telegram.org), "email" (do-not-reply`@telegram`.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "spoiler" (spoiler message), "blockquote" (block quotation), "expandable_blockquote" (collapsed-by-default block quotation), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs), "text_mention" (for users without usernames), "custom_emoji" (for inline custom emoji stickers), or "date_time" (for formatted date and time). */
   type: string;
   /** Offset in UTF-16 code units to the start of the entity */
   offset: number;
@@ -628,7 +628,7 @@ export interface ExternalReplyInfo {
 export interface ReplyParameters {
   /** Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified */
   message_id: number;
-  /** Optional. If the message to be replied to is from a different chat, unique identifier for the chat or username of the bot, supergroup or channel in the format @username. Not supported for messages sent on behalf of a business account and messages from channel direct messages chats. */
+  /** Optional. If the message to be replied to is from a different chat, unique identifier for the chat or username of the bot, supergroup or channel in the format `@username`. Not supported for messages sent on behalf of a business account and messages from channel direct messages chats. */
   chat_id?: number | string;
   /** Optional. Pass True if the message should be sent even if the specified message to be replied to is not found. Always False for replies in another chat or forum topic. Always True for messages sent on behalf of a business account. */
   allow_sending_without_reply?: boolean;
@@ -1875,7 +1875,7 @@ export interface ReplyKeyboardMarkup {
   one_time_keyboard?: boolean;
   /** Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters */
   input_field_placeholder?: string;
-  /** Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard. */
+  /** Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are `@mentioned` in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard. */
   selective?: boolean;
 }
 
@@ -1893,7 +1893,7 @@ export interface KeyboardButton {
   request_users?: KeyboardButtonRequestUsers;
   /** Optional. If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a "chat_shared" service message. Available in private chats only. */
   request_chat?: KeyboardButtonRequestChat;
-  /** Optional. If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot. Available for bots that enabled management of other bots in the @BotFather Mini App. Available in private chats only. */
+  /** Optional. If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot. Available for bots that enabled management of other bots in the `@BotFather` Mini App. Available in private chats only. */
   request_managed_bot?: KeyboardButtonRequestManagedBot;
   /** Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only. */
   request_contact?: boolean;
@@ -1979,7 +1979,7 @@ export interface KeyboardButtonPollType {
 export interface ReplyKeyboardRemove {
   /** Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup) */
   remove_keyboard: boolean;
-  /** Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet. */
+  /** Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are `@mentioned` in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet. */
   selective?: boolean;
 }
 
@@ -2090,7 +2090,7 @@ export interface ForceReply {
   force_reply: boolean;
   /** Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters */
   input_field_placeholder?: string;
-  /** Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. */
+  /** Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are `@mentioned` in the text of the Message object; 2) if the bot's message is a reply to a message in the same chat and forum topic, sender of the original message. */
   selective?: boolean;
 }
 
@@ -3074,7 +3074,7 @@ export interface BotCommandScopeAllChatAdministrators {
 export interface BotCommandScopeChat {
   /** Scope type, must be chat */
   type: string;
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username. Channel direct messages chats and channel chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username`. Channel direct messages chats and channel chats aren't supported. */
   chat_id: number | string;
 }
 
@@ -3084,7 +3084,7 @@ export interface BotCommandScopeChat {
 export interface BotCommandScopeChatAdministrators {
   /** Scope type, must be chat_administrators */
   type: string;
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username. Channel direct messages chats and channel chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username`. Channel direct messages chats and channel chats aren't supported. */
   chat_id: number | string;
 }
 
@@ -3094,7 +3094,7 @@ export interface BotCommandScopeChatAdministrators {
 export interface BotCommandScopeChatMember {
   /** Scope type, must be chat_member */
   type: string;
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username. Channel direct messages chats and channel chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username`. Channel direct messages chats and channel chats aren't supported. */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -5177,7 +5177,7 @@ export interface InputInvoiceMessageContent {
   description: string;
   /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use it for your internal processes. */
   payload: string;
-  /** Optional. Payment provider token, obtained via @BotFather. Pass an empty string for payments in Telegram Stars. */
+  /** Optional. Payment provider token, obtained via `@BotFather`. Pass an empty string for payments in Telegram Stars. */
   provider_token?: string;
   /** Three-letter ISO 4217 currency code, see more on currencies. Pass "XTR" for payments in Telegram Stars. */
   currency: string;
@@ -5215,7 +5215,7 @@ export interface InputInvoiceMessageContent {
 
 /**
  * Represents a result of an inline query that was chosen by the user and sent to their chat partner.
- * Note: It is necessary to enable inline feedback via @BotFather in order to receive these objects in updates.
+ * Note: It is necessary to enable inline feedback via `@BotFather` in order to receive these objects in updates.
  */
 export interface ChosenInlineResult {
   /** The unique identifier for the result that was chosen */
@@ -5842,7 +5842,7 @@ export interface DeleteWebhookParams {
 export interface SendMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -5873,13 +5873,13 @@ export interface SendMessageParams {
 }
 
 export interface ForwardMessageParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the message will be forwarded; required if the message is forwarded to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format @username) */
+  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format `@username`) */
   from_chat_id: number | string;
   /** New start timestamp for the forwarded video in the message */
   video_start_timestamp?: number;
@@ -5896,13 +5896,13 @@ export interface ForwardMessageParams {
 }
 
 export interface ForwardMessagesParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the messages will be forwarded; required if the messages are forwarded to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format @username) */
+  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format `@username`) */
   from_chat_id: number | string;
   /** A JSON-serialized list of 1-100 identifiers of messages in the chat from_chat_id to forward. The identifiers must be specified in a strictly increasing order. */
   message_ids: number[];
@@ -5913,13 +5913,13 @@ export interface ForwardMessagesParams {
 }
 
 export interface CopyMessageParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format @username) */
+  /** Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format `@username`) */
   from_chat_id: number | string;
   /** Message identifier in the chat specified in from_chat_id */
   message_id: number;
@@ -5950,13 +5950,13 @@ export interface CopyMessageParams {
 }
 
 export interface CopyMessagesParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
   /** Identifier of the direct messages topic to which the messages will be sent; required if the messages are sent to a direct messages chat */
   direct_messages_topic_id?: number;
-  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format @username) */
+  /** Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format `@username`) */
   from_chat_id: number | string;
   /** A JSON-serialized list of 1-100 identifiers of messages in the chat from_chat_id to copy. The identifiers must be specified in a strictly increasing order. */
   message_ids: number[];
@@ -5971,7 +5971,7 @@ export interface CopyMessagesParams {
 export interface SendPhotoParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6008,7 +6008,7 @@ export interface SendPhotoParams {
 export interface SendLivePhotoParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target channel (in the format @channelusername) */
+  /** Unique identifier for the target chat or username of the target channel (in the format `@channelusername`) */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6047,7 +6047,7 @@ export interface SendLivePhotoParams {
 export interface SendAudioParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6088,7 +6088,7 @@ export interface SendAudioParams {
 export interface SendDocumentParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6125,7 +6125,7 @@ export interface SendDocumentParams {
 export interface SendVideoParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6176,7 +6176,7 @@ export interface SendVideoParams {
 export interface SendAnimationParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6221,7 +6221,7 @@ export interface SendAnimationParams {
 export interface SendVoiceParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6256,7 +6256,7 @@ export interface SendVoiceParams {
 export interface SendVideoNoteParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6289,7 +6289,7 @@ export interface SendVideoNoteParams {
 export interface SendPaidMediaParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. If the chat is a channel, all Telegram Star proceeds from this media will be credited to the chat's balance. Otherwise, they will be credited to the bot's balance. */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. If the chat is a channel, all Telegram Star proceeds from this media will be credited to the chat's balance. Otherwise, they will be credited to the bot's balance. */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6326,7 +6326,7 @@ export interface SendPaidMediaParams {
 export interface SendMediaGroupParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6349,7 +6349,7 @@ export interface SendMediaGroupParams {
 export interface SendLocationParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6386,7 +6386,7 @@ export interface SendLocationParams {
 export interface SendVenueParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6427,7 +6427,7 @@ export interface SendVenueParams {
 export interface SendContactParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6460,7 +6460,7 @@ export interface SendContactParams {
 export interface SendPollParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. Polls can't be sent to channel direct messages chats. */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. Polls can't be sent to channel direct messages chats. */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6531,7 +6531,7 @@ export interface SendPollParams {
 export interface SendChecklistParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id: string;
-  /** Unique identifier for the target chat or username of the target bot in the format @username */
+  /** Unique identifier for the target chat or username of the target bot in the format `@username` */
   chat_id: number | string;
   /** A JSON-serialized object for the checklist to send */
   checklist: InputChecklist;
@@ -6550,7 +6550,7 @@ export interface SendChecklistParams {
 export interface SendDiceParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6592,7 +6592,7 @@ export interface SendMessageDraftParams {
 export interface SendChatActionParams {
   /** Unique identifier of the business connection on behalf of which the action will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot or supergroup in the format @username. Channel chats and channel direct messages chats aren't supported. */
+  /** Unique identifier for the target chat or username of the target bot or supergroup in the format `@username`. Channel chats and channel direct messages chats aren't supported. */
   chat_id: number | string;
   /** Unique identifier for the target message thread or topic of a forum; for supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -6601,7 +6601,7 @@ export interface SendChatActionParams {
 }
 
 export interface SetMessageReactionParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Identifier of the target message. If the message belongs to a media group, the reaction is set to the first non-deleted message in the group instead. */
   message_id: number;
@@ -6644,7 +6644,7 @@ export interface GetFileParams {
 }
 
 export interface BanChatMemberParams {
-  /** Unique identifier for the target group or username of the target supergroup or channel in the format @username */
+  /** Unique identifier for the target group or username of the target supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6655,7 +6655,7 @@ export interface BanChatMemberParams {
 }
 
 export interface UnbanChatMemberParams {
-  /** Unique identifier for the target group or username of the target supergroup or channel in the format @username */
+  /** Unique identifier for the target group or username of the target supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6664,7 +6664,7 @@ export interface UnbanChatMemberParams {
 }
 
 export interface RestrictChatMemberParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6677,7 +6677,7 @@ export interface RestrictChatMemberParams {
 }
 
 export interface PromoteChatMemberParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6718,7 +6718,7 @@ export interface PromoteChatMemberParams {
 }
 
 export interface SetChatAdministratorCustomTitleParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6727,7 +6727,7 @@ export interface SetChatAdministratorCustomTitleParams {
 }
 
 export interface SetChatMemberTagParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6736,21 +6736,21 @@ export interface SetChatMemberTagParams {
 }
 
 export interface BanChatSenderChatParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target sender chat */
   sender_chat_id: number;
 }
 
 export interface UnbanChatSenderChatParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target sender chat */
   sender_chat_id: number;
 }
 
 export interface SetChatPermissionsParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** A JSON-serialized object for new default chat permissions */
   permissions: ChatPermissions;
@@ -6759,12 +6759,12 @@ export interface SetChatPermissionsParams {
 }
 
 export interface ExportChatInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
 }
 
 export interface CreateChatInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Invite link name; 0-32 characters */
   name?: string;
@@ -6777,7 +6777,7 @@ export interface CreateChatInviteLinkParams {
 }
 
 export interface EditChatInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** The invite link to edit */
   invite_link: string;
@@ -6792,7 +6792,7 @@ export interface EditChatInviteLinkParams {
 }
 
 export interface CreateChatSubscriptionInviteLinkParams {
-  /** Unique identifier for the target channel chat or username of the target channel in the format @username */
+  /** Unique identifier for the target channel chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Invite link name; 0-32 characters */
   name?: string;
@@ -6803,7 +6803,7 @@ export interface CreateChatSubscriptionInviteLinkParams {
 }
 
 export interface EditChatSubscriptionInviteLinkParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** The invite link to edit */
   invite_link: string;
@@ -6812,21 +6812,21 @@ export interface EditChatSubscriptionInviteLinkParams {
 }
 
 export interface RevokeChatInviteLinkParams {
-  /** Unique identifier of the target chat or username of the target channel in the format @username */
+  /** Unique identifier of the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** The invite link to revoke */
   invite_link: string;
 }
 
 export interface ApproveChatJoinRequestParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
 }
 
 export interface DeclineChatJoinRequestParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6847,26 +6847,26 @@ export interface SendChatJoinRequestWebAppParams {
 }
 
 export interface SetChatPhotoParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** New chat photo, uploaded using multipart/form-data */
   photo: InputFile;
 }
 
 export interface DeleteChatPhotoParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
 }
 
 export interface SetChatTitleParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** New chat title, 1-128 characters */
   title: string;
 }
 
 export interface SetChatDescriptionParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** New chat description, 0-255 characters */
   description?: string;
@@ -6875,7 +6875,7 @@ export interface SetChatDescriptionParams {
 export interface PinChatMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be pinned */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Identifier of a message to pin */
   message_id: number;
@@ -6886,41 +6886,41 @@ export interface PinChatMessageParams {
 export interface UnpinChatMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be unpinned */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Identifier of the message to unpin. Required if business_connection_id is specified. If not specified, the most recent pinned message (by sending date) will be unpinned. */
   message_id?: number;
 }
 
 export interface UnpinAllChatMessagesParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
 }
 
 export interface LeaveChatParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username. Channel direct messages chats aren't supported; leave the corresponding channel instead. */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username`. Channel direct messages chats aren't supported; leave the corresponding channel instead. */
   chat_id: number | string;
 }
 
 export interface GetChatParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
   chat_id: number | string;
 }
 
 export interface GetChatAdministratorsParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Pass True to additionally receive all bots that are administrators of the chat. By default, bots other than the current bot are omitted. */
   return_bots?: boolean;
 }
 
 export interface GetChatMemberCountParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
   chat_id: number | string;
 }
 
 export interface GetChatMemberParams {
-  /** Unique identifier for the target chat or username of the target supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -6934,19 +6934,19 @@ export interface GetUserPersonalChatMessagesParams {
 }
 
 export interface SetChatStickerSetParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Name of the sticker set to be set as the group sticker set */
   sticker_set_name: string;
 }
 
 export interface DeleteChatStickerSetParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
 }
 
 export interface CreateForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Topic name, 1-128 characters */
   name: string;
@@ -6957,7 +6957,7 @@ export interface CreateForumTopicParams {
 }
 
 export interface EditForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
@@ -6968,62 +6968,62 @@ export interface EditForumTopicParams {
 }
 
 export interface CloseForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface ReopenForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface DeleteForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface UnpinAllForumTopicMessagesParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread of the forum topic */
   message_thread_id: number;
 }
 
 export interface EditGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** New topic name, 1-128 characters */
   name: string;
 }
 
 export interface CloseGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
 }
 
 export interface ReopenGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
 }
 
 export interface HideGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
 }
 
 export interface UnhideGeneralForumTopicParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
 }
 
 export interface UnpinAllGeneralForumTopicMessagesParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
 }
 
@@ -7034,7 +7034,7 @@ export interface AnswerCallbackQueryParams {
   text?: string;
   /** If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false. */
   show_alert?: boolean;
-  /** URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @BotFather, specify the URL that opens your game - note that this will only work if the query comes from a callback_game button. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter. */
+  /** URL that will be opened by the user's client. If you have created a Game and accepted the conditions via `@BotFather`, specify the URL that opens your game - note that this will only work if the query comes from a callback_game button. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter. */
   url?: string;
   /** The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0. */
   cache_time?: number;
@@ -7048,7 +7048,7 @@ export interface AnswerGuestQueryParams {
 }
 
 export interface GetUserChatBoostsParams {
-  /** Unique identifier for the chat or username of the channel in the format @username */
+  /** Unique identifier for the chat or username of the channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier of the target user */
   user_id: number;
@@ -7174,7 +7174,7 @@ export interface GetMyDefaultAdministratorRightsParams {
 export interface SendGiftParams {
   /** Required if chat_id is not specified. Unique identifier of the target user who will receive the gift. */
   user_id?: number;
-  /** Required if user_id is not specified. Unique identifier for the chat or username of the channel (in the format @username) that will receive the gift. */
+  /** Required if user_id is not specified. Unique identifier for the chat or username of the channel (in the format `@username`) that will receive the gift. */
   chat_id?: number | string;
   /** Identifier of the gift; limited gifts can't be sent to channel chats */
   gift_id: string;
@@ -7211,7 +7211,7 @@ export interface VerifyUserParams {
 }
 
 export interface VerifyChatParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. Channel direct messages chats can't be verified. */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. Channel direct messages chats can't be verified. */
   chat_id: number | string;
   /** Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description. */
   custom_description?: string;
@@ -7223,7 +7223,7 @@ export interface RemoveUserVerificationParams {
 }
 
 export interface RemoveChatVerificationParams {
-  /** Unique identifier for the target chat or username of the target bot or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot or channel in the format `@username` */
   chat_id: number | string;
 }
 
@@ -7350,7 +7350,7 @@ export interface GetUserGiftsParams {
 }
 
 export interface GetChatGiftsParams {
-  /** Unique identifier for the target chat or username of the target channel in the format @username */
+  /** Unique identifier for the target chat or username of the target channel in the format `@username` */
   chat_id: number | string;
   /** Pass True to exclude gifts that aren't saved to the chat's profile page. Always True, unless the bot has the can_post_messages administrator right in the channel. */
   exclude_unsaved?: boolean;
@@ -7495,7 +7495,7 @@ export interface SavePreparedKeyboardButtonParams {
 export interface EditMessageTextParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
   chat_id?: number | string;
   /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
@@ -7518,7 +7518,7 @@ export interface EditMessageTextParams {
 export interface EditMessageCaptionParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
   chat_id?: number | string;
   /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
@@ -7539,7 +7539,7 @@ export interface EditMessageCaptionParams {
 export interface EditMessageMediaParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
   chat_id?: number | string;
   /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
@@ -7554,7 +7554,7 @@ export interface EditMessageMediaParams {
 export interface EditMessageLiveLocationParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
   chat_id?: number | string;
   /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
@@ -7579,7 +7579,7 @@ export interface EditMessageLiveLocationParams {
 export interface StopMessageLiveLocationParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
   chat_id?: number | string;
   /** Required if inline_message_id is not specified. Identifier of the message with live location to stop. */
   message_id?: number;
@@ -7592,7 +7592,7 @@ export interface StopMessageLiveLocationParams {
 export interface EditMessageChecklistParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id: string;
-  /** Unique identifier for the target chat or username of the target bot in the format @username */
+  /** Unique identifier for the target chat or username of the target bot in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message */
   message_id: number;
@@ -7605,7 +7605,7 @@ export interface EditMessageChecklistParams {
 export interface EditMessageReplyMarkupParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username. */
+  /** Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. */
   chat_id?: number | string;
   /** Required if inline_message_id is not specified. Identifier of the message to edit. */
   message_id?: number;
@@ -7618,7 +7618,7 @@ export interface EditMessageReplyMarkupParams {
 export interface StopPollParams {
   /** Unique identifier of the business connection on behalf of which the message to be edited was sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Identifier of the original message with the poll */
   message_id: number;
@@ -7645,21 +7645,21 @@ export interface DeclineSuggestedPostParams {
 }
 
 export interface DeleteMessageParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Identifier of the message to delete */
   message_id: number;
 }
 
 export interface DeleteMessagesParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** A JSON-serialized list of 1-100 identifiers of messages to delete. See deleteMessage for limitations on which messages can be deleted. */
   message_ids: number[];
 }
 
 export interface DeleteMessageReactionParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Identifier of the target message */
   message_id: number;
@@ -7670,7 +7670,7 @@ export interface DeleteMessageReactionParams {
 }
 
 export interface DeleteAllMessageReactionsParams {
-  /** Unique identifier for the target chat or username of the target supergroup in the format @username */
+  /** Unique identifier for the target chat or username of the target supergroup in the format `@username` */
   chat_id: number | string;
   /** Identifier of the user whose reactions will be removed, if the reactions were added by a user */
   user_id?: number;
@@ -7681,7 +7681,7 @@ export interface DeleteAllMessageReactionsParams {
 export interface SendStickerParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -7827,7 +7827,7 @@ export interface DeleteStickerSetParams {
 export interface SendRichMessageParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -7878,7 +7878,7 @@ export interface AnswerInlineQueryParams {
 }
 
 export interface SendInvoiceParams {
-  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format @username */
+  /** Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username` */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
@@ -7890,7 +7890,7 @@ export interface SendInvoiceParams {
   description: string;
   /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use it for your internal processes. */
   payload: string;
-  /** Payment provider token, obtained via @BotFather. Pass an empty string for payments in Telegram Stars. */
+  /** Payment provider token, obtained via `@BotFather`. Pass an empty string for payments in Telegram Stars. */
   provider_token?: string;
   /** Three-letter ISO 4217 currency code, see more on currencies. Pass "XTR" for payments in Telegram Stars. */
   currency: string;
@@ -7951,7 +7951,7 @@ export interface CreateInvoiceLinkParams {
   description: string;
   /** Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use it for your internal processes. */
   payload: string;
-  /** Payment provider token, obtained via @BotFather. Pass an empty string for payments in Telegram Stars. */
+  /** Payment provider token, obtained via `@BotFather`. Pass an empty string for payments in Telegram Stars. */
   provider_token?: string;
   /** Three-letter ISO 4217 currency code, see more on currencies. Pass "XTR" for payments in Telegram Stars. */
   currency: string;
@@ -8042,11 +8042,11 @@ export interface SetPassportDataErrorsParams {
 export interface SendGameParams {
   /** Unique identifier of the business connection on behalf of which the message will be sent */
   business_connection_id?: string;
-  /** Unique identifier for the target chat or username of the target bot in the format @username. Games can't be sent to channel direct messages chats and channel chats. */
+  /** Unique identifier for the target chat or username of the target bot in the format `@username`. Games can't be sent to channel direct messages chats and channel chats. */
   chat_id: number | string;
   /** Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only */
   message_thread_id?: number;
-  /** Short name of the game, serves as the unique identifier for the game. Set up your games via @BotFather. */
+  /** Short name of the game, serves as the unique identifier for the game. Set up your games via `@BotFather`. */
   game_short_name: string;
   /** Sends the message silently. Users will receive a notification with no sound. */
   disable_notification?: boolean;
@@ -8101,7 +8101,8 @@ export interface TelegramBotApi {
   getUpdates(params: GetUpdatesParams): Promise<Update[]>;
 
   /**
-   * Use this method to specify a URL and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified URL, containing a JSON-serialized Update. In case of an unsuccessful request (a request with response HTTP status code different from 2XY), we will repeat the request and give up after a reasonable amount of attempts. Returns True on success.,If you'd like to make sure that the webhook was set by you, you can specify secret data in the parameter secret_token. If specified, the request will contain a header "X-Telegram-Bot-Api-Secret-Token" with the secret token as content.
+   * Use this method to specify a URL and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified URL, containing a JSON-serialized Update. In case of an unsuccessful request (a request with response HTTP status code different from 2XY), we will repeat the request and give up after a reasonable amount of attempts. Returns True on success.
+   * If you'd like to make sure that the webhook was set by you, you can specify secret data in the parameter secret_token. If specified, the request will contain a header "X-Telegram-Bot-Api-Secret-Token" with the secret token as content.
    */
   setWebhook(params: SetWebhookParams): Promise<boolean>;
 
@@ -8166,7 +8167,8 @@ export interface TelegramBotApi {
   sendLivePhoto(params: SendLivePhotoParams): Promise<Message>;
 
   /**
-   * Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.,For sending voice messages, use the sendVoice method instead.
+   * Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+   * For sending voice messages, use the sendVoice method instead.
    */
   sendAudio(params: SendAudioParams): Promise<Message>;
 
@@ -8241,7 +8243,8 @@ export interface TelegramBotApi {
   sendMessageDraft(params: SendMessageDraftParams): Promise<boolean>;
 
   /**
-   * Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.,We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
+   * Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
+   * We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
    */
   sendChatAction(params: SendChatActionParams): Promise<boolean>;
 
@@ -8266,7 +8269,8 @@ export interface TelegramBotApi {
   setUserEmojiStatus(params: SetUserEmojiStatusParams): Promise<boolean>;
 
   /**
-   * Use this method to get basic information about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.,Note: This function may not preserve the original file name and MIME type. You should save the file's MIME type and name (if available) when the File object is received.
+   * Use this method to get basic information about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
+   * Note: This function may not preserve the original file name and MIME type. You should save the file's MIME type and name (if available) when the File object is received.
    */
   getFile(params: GetFileParams): Promise<File>;
 
@@ -8821,7 +8825,17 @@ export interface TelegramBotApi {
   declineSuggestedPost(params: DeclineSuggestedPostParams): Promise<boolean>;
 
   /**
-   * Use this method to delete a message, including service messages, with the following limitations:,- A message can only be deleted if it was sent less than 48 hours ago.,- Service messages about a supergroup, channel, or forum topic creation can't be deleted.,- A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.,- Bots can delete outgoing messages in private chats, groups, and supergroups.,- Bots can delete incoming messages in private chats.,- Bots granted can_post_messages permissions can delete outgoing messages in channels.,- If the bot is an administrator of a group, it can delete any message there.,- If the bot has can_delete_messages administrator right in a supergroup or a channel, it can delete any message there.,- If the bot has can_manage_direct_messages administrator right in a channel, it can delete any message in the corresponding direct messages chat.,Returns True on success.
+   * Use this method to delete a message, including service messages, with the following limitations:
+   * - A message can only be deleted if it was sent less than 48 hours ago.
+   * - Service messages about a supergroup, channel, or forum topic creation can't be deleted.
+   * - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
+   * - Bots can delete outgoing messages in private chats, groups, and supergroups.
+   * - Bots can delete incoming messages in private chats.
+   * - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+   * - If the bot is an administrator of a group, it can delete any message there.
+   * - If the bot has can_delete_messages administrator right in a supergroup or a channel, it can delete any message there.
+   * - If the bot has can_manage_direct_messages administrator right in a channel, it can delete any message in the corresponding direct messages chat.
+   * Returns True on success.
    */
   deleteMessage(params: DeleteMessageParams): Promise<boolean>;
 
@@ -8931,7 +8945,8 @@ export interface TelegramBotApi {
   sendRichMessageDraft(params: SendRichMessageDraftParams): Promise<boolean>;
 
   /**
-   * Use this method to send answers to an inline query. On success, True is returned.,No more than 50 results per query are allowed.
+   * Use this method to send answers to an inline query. On success, True is returned.
+   * No more than 50 results per query are allowed.
    */
   answerInlineQuery(params: AnswerInlineQueryParams): Promise<boolean>;
 
@@ -8976,7 +8991,8 @@ export interface TelegramBotApi {
   editUserStarSubscription(params: EditUserStarSubscriptionParams): Promise<boolean>;
 
   /**
-   * Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.,Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
+   * Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.
+   * Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
    */
   setPassportDataErrors(params: SetPassportDataErrorsParams): Promise<boolean>;
 

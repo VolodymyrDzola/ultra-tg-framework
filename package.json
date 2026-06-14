@@ -1,8 +1,8 @@
 {
   "name": "ultra-telegram-framework",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "author": "Volodymyr Dzola",
-  "description": "Telegram framework for Google Apps Script and Node.js - Bot API 10.0",
+  "description": "Telegram framework for Google Apps Script and Node.js - Bot API 10.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VolodymyrDzola/ultra-telegram-framework.git"
